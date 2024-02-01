@@ -48,15 +48,6 @@
   display: flex;
   gap: 8px;
 
-  .label {
-    color: var(--secondary-dark-gray, #7a7a7a);
-    font-family: 'Work Sans';
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: normal;
-  }
-
   .phoneInput {
     display: flex;
     width: 300px;
@@ -184,6 +175,31 @@
         font-style: normal;
         font-weight: 500;
         line-height: normal;
+      }
+
+      &Wrapper {
+        position: relative;
+
+        .label {
+          position: absolute;
+          top: 0;
+          left: 0;
+          background: none;
+
+          &.filled {
+            top: -20px;
+            color: var(--main-black, #414141);
+          }
+
+          &Text {
+            color: var(--secondary-dark-gray, #7a7a7a);
+            font-family: 'Work Sans';
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: normal;
+          }
+        }
       }
     }
   }

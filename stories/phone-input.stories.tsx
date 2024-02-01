@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { useCallback } from 'react';
+import React, { useCallback } from 'react';
 
 import { PhoneInput } from './phone-input';
 import styles from './phone-input-stories.module.scss';
@@ -140,6 +140,7 @@ export function Styled() {
     },
     []
   );
+  const [focused, setFocused] = React.useState(false);
 
   return (
     <form
@@ -227,16 +228,25 @@ export function Styled() {
             </ul>
           </PhoneInput.Dialog>
         </PhoneInput.CountrySelect>
-        <PhoneInput.NumberInput
-          className={styles.numberInput}
-          id="phone"
-          onChange={(e) => {
-            handlePhoneNumberChange(e.target.value);
-          }}
-          placeholder="Phone Number"
-          type="tel"
-          value={phoneNumber}
-        />
+        <div className={styles.numberInputWrapper}>
+          <label
+            className={clsx(styles.label, phoneNumber && styles.filled)}
+            htmlFor="phone"
+          >
+            <span className={styles.labelText}>Phone number</span>
+          </label>
+          <PhoneInput.NumberInput
+            className={styles.numberInput}
+            id="phone"
+            onBlur={() => setFocused(false)}
+            onChange={(e) => {
+              handlePhoneNumberChange(e.target.value);
+            }}
+            onFocus={() => setFocused(true)}
+            type="tel"
+            value={phoneNumber}
+          />
+        </div>
       </PhoneInput>
     </form>
   );
