@@ -6,7 +6,7 @@ import {
 import { useState } from 'react';
 
 export const usePhoneInput = (
-  initialCountry: string,
+  initialCountry = 'US',
   initialPhoneNumber = ''
 ) => {
   const [country, setCountry] = useState(initialCountry);

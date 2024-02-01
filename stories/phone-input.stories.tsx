@@ -23,7 +23,7 @@ export function Input() {
     handlePhoneNumberChange,
     isValid,
     phoneNumber,
-  } = usePhoneInput('US');
+  } = usePhoneInput();
 
   const pickCountry = useCallback(
     (e: React.KeyboardEvent | React.MouseEvent) => {
