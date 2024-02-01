@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "clsx": "^2.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
@@ -25,6 +26,7 @@
     "@storybook/react-vite": "^7.6.12",
     "@storybook/test": "^7.6.12",
     "prop-types": "^15.8.1",
+    "sass": "^1.70.0",
     "storybook": "^7.6.12",
     "typescript": "^5.3.3"
   }

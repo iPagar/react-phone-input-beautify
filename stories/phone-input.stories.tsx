@@ -1,6 +1,6 @@
 import { PhoneInput } from "./phone-input";
+import styles from "./phone-input-stories.module.scss";
 
-// More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 export default {
   title: "PhoneInput",
   component: PhoneInput,
@@ -13,7 +13,83 @@ export default {
   },
 };
 
-// More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
-export const Input = {
-  args: {},
+export const Input = () => (
+  <PhoneInput>
+    <PhoneInput.CountrySelect>
+      <PhoneInput.CountrySelectTrigger className={styles.countrySelect}>
+        Country
+      </PhoneInput.CountrySelectTrigger>
+      <PhoneInput.CountrySelectDialog className={styles.countrySelectDialog}>
+        <input />
+        <ul>
+          <li value="1">US</li>
+          <li value="44">UK</li>
+        </ul>
+      </PhoneInput.CountrySelectDialog>
+    </PhoneInput.CountrySelect>
+    <PhoneInput.NumberInput />
+  </PhoneInput>
+);
+
+export const Form = () => (
+  <form
+    className={styles.form}
+    onSubmit={(e) => {
+      e.preventDefault();
+    }}
+  >
+    <input type="text" placeholder="Name" />
+    <PhoneInput>
+      <PhoneInput.CountrySelect>
+        <PhoneInput.CountrySelectTrigger className={styles.countrySelect}>
+          Country
+        </PhoneInput.CountrySelectTrigger>
+        <PhoneInput.CountrySelectDialog className={styles.countrySelectDialog}>
+          <input />
+          <ul>
+            <li value="1">US</li>
+            <li value="44">UK</li>
+          </ul>
+        </PhoneInput.CountrySelectDialog>
+      </PhoneInput.CountrySelect>
+      <PhoneInput.NumberInput />
+    </PhoneInput>
+  </form>
+);
+
+export const Styled = () => {
+  return (
+    <form
+      className={styles.form}
+      onSubmit={(e) => {
+        e.preventDefault();
+      }}
+    >
+      <label htmlFor="phone" className={styles.label}>
+        Your phone
+      </label>
+      <PhoneInput className={styles.phoneInput}>
+        <PhoneInput.CountrySelect>
+          <PhoneInput.CountrySelectTrigger className={styles.countrySelect}>
+            Country
+          </PhoneInput.CountrySelectTrigger>
+          <PhoneInput.CountrySelectDialog
+            className={styles.countrySelectDialog}
+          >
+            <input />
+            <ul>
+              <li value="1">US</li>
+              <li value="44">UK</li>
+            </ul>
+          </PhoneInput.CountrySelectDialog>
+        </PhoneInput.CountrySelect>
+        <PhoneInput.NumberInput
+          className={styles.numberInput}
+          id="phone"
+          type="tel"
+          placeholder="Phone"
+        />
+      </PhoneInput>
+    </form>
+  );
 };

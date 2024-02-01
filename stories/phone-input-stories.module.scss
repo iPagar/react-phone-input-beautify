@@ -1,0 +1,35 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  font-size: 10px;
+  font-weight: 500;
+  color: #000;
+}
+
+.phoneInput {
+  border-radius: 29px;
+  border: 2px solid var(--default-input-dark, rgba(255, 255, 255, 0));
+  position: relative;
+
+  .countrySelect {
+    appearance: none;
+    border: none;
+    outline: none;
+
+    &Dialog {
+      margin-top: 10px;
+      border-radius: 8px;
+      border: 1px solid #000;
+    }
+  }
+
+  .numberInput {
+    appearance: none;
+    border: none;
+    outline: none;
+  }
+}
