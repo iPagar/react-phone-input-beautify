@@ -44,16 +44,14 @@ export function Input() {
         Your phone
         <PhoneInput className={styles.phoneInput}>
           <PhoneInput.CountrySelect>
-            <PhoneInput.CountrySelectTrigger className={styles.countrySelect}>
+            <PhoneInput.Trigger className={styles.countrySelect}>
               <img alt="" src={`https://flagsapi.com/${country}/flat/64.png`} />
               {country}
-            </PhoneInput.CountrySelectTrigger>
-            <PhoneInput.CountrySelectDialog
-              className={styles.countrySelectDialog}
-            >
+            </PhoneInput.Trigger>
+            <PhoneInput.Dialog className={styles.countrySelectDialog}>
               <input />
               <ul>
-                <PhoneInput.CountrySelectItem
+                <PhoneInput.Item
                   aria-selected="true"
                   onClick={pickCountry}
                   onKeyDown={pickCountry}
@@ -62,8 +60,8 @@ export function Input() {
                   value="1"
                 >
                   US
-                </PhoneInput.CountrySelectItem>
-                <PhoneInput.CountrySelectItem
+                </PhoneInput.Item>
+                <PhoneInput.Item
                   aria-selected="false"
                   onClick={pickCountry}
                   onKeyDown={pickCountry}
@@ -72,9 +70,9 @@ export function Input() {
                   value="44"
                 >
                   RU
-                </PhoneInput.CountrySelectItem>
+                </PhoneInput.Item>
               </ul>
-            </PhoneInput.CountrySelectDialog>
+            </PhoneInput.Dialog>
           </PhoneInput.CountrySelect>
           <PhoneInput.NumberInput
             className={styles.numberInput}
@@ -104,18 +102,16 @@ export function Form() {
       <input placeholder="Name" type="text" />
       <PhoneInput>
         <PhoneInput.CountrySelect>
-          <PhoneInput.CountrySelectTrigger className={styles.countrySelect}>
+          <PhoneInput.Trigger className={styles.countrySelect}>
             Country
-          </PhoneInput.CountrySelectTrigger>
-          <PhoneInput.CountrySelectDialog
-            className={styles.countrySelectDialog}
-          >
+          </PhoneInput.Trigger>
+          <PhoneInput.Dialog className={styles.countrySelectDialog}>
             <input />
             <ul>
               <li value="1">US</li>
               <li value="44">UK</li>
             </ul>
-          </PhoneInput.CountrySelectDialog>
+          </PhoneInput.Dialog>
         </PhoneInput.CountrySelect>
         <PhoneInput.NumberInput />
       </PhoneInput>

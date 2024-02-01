@@ -120,7 +120,7 @@ PhoneInput.CountrySelect = function PhoneInputCountrySelect(props: {
   );
 };
 
-PhoneInput.CountrySelectTrigger = function PhoneInputCountrySelectTrigger(
+PhoneInput.Trigger = function PhoneInputTrigger(
   props: React.ButtonHTMLAttributes<HTMLButtonElement>
 ) {
   const {
@@ -188,7 +188,7 @@ function useClickOutside(
   }, [refs, handler]);
 }
 
-PhoneInput.CountrySelectDialog = function PhoneInputCountrySelectDialog(
+PhoneInput.Dialog = function PhoneInputDialog(
   props: React.HTMLAttributes<HTMLDivElement>
 ) {
   const dialogRef = useRef<HTMLDivElement>(null);
@@ -219,7 +219,7 @@ PhoneInput.CountrySelectDialog = function PhoneInputCountrySelectDialog(
   );
 };
 
-PhoneInput.CountrySelectItem = function PhoneInputCountrySelectItem(
+PhoneInput.Item = function PhoneInputItem(
   props: React.LiHTMLAttributes<HTMLLIElement>
 ) {
   const { children, className, onClick, onKeyDown, value } = props;
