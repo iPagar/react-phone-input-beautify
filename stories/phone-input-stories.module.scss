@@ -1,41 +1,183 @@
+* {
+  box-sizing: border-box;
+}
+
 .form {
   display: flex;
   flex-direction: column;
   gap: 8px;
-}
 
-.label {
-  font-size: 10px;
-  font-weight: 500;
-  color: #000;
-}
-
-.phoneInput {
-  border-radius: 29px;
-  border: 2px solid var(--default-input-dark, rgba(255, 255, 255, 0));
-  position: relative;
-
-  .countrySelect {
-    appearance: none;
-    border: none;
-    outline: none;
-
-    img {
-      width: 20px;
-      height: 20px;
-      margin-right: 8px;
-    }
-
-    &Dialog {
-      margin-top: 10px;
-      border-radius: 8px;
-      border: 1px solid #000;
-    }
+  .label {
+    font-size: 10px;
+    font-weight: 500;
+    color: #000;
   }
 
-  .numberInput {
-    appearance: none;
-    border: none;
-    outline: none;
+  .phoneInput {
+    border-radius: 29px;
+    border: 2px solid var(--default-input-dark, rgba(255, 255, 255, 0));
+    position: relative;
+
+    .countrySelect {
+      appearance: none;
+      border: none;
+      outline: none;
+
+      .countryFlag {
+        width: 20px;
+        height: 20px;
+        margin-right: 8px;
+      }
+
+      &Dialog {
+        margin-top: 10px;
+        border-radius: 8px;
+        border: 1px solid #000;
+      }
+    }
+
+    .numberInput {
+      appearance: none;
+      border: none;
+      outline: none;
+    }
+  }
+}
+
+.styledForm {
+  display: flex;
+  gap: 8px;
+
+  .label {
+    color: var(--secondary-dark-gray, #7a7a7a);
+    font-family: 'Work Sans';
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
+
+  .phoneInput {
+    display: flex;
+    width: 300px;
+    height: 60px;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+    border-bottom: 1px solid var(--secondary-gray, #a2a2a2);
+    background: #fff;
+
+    &.invalid {
+      border-bottom: 1px solid var(--secondary-red, #ff0000);
+    }
+
+    .countryIcon {
+      display: flex;
+      width: 20px;
+      height: 20px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .countrySelect {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+
+      &Search {
+        display: flex;
+        height: 48px;
+        padding: 12px;
+        align-items: center;
+        gap: 8px;
+        align-self: stretch;
+
+        border-bottom: 1px solid var(--secondary-light-gray, #dedede);
+
+        &Icon {
+          display: flex;
+          width: 24px;
+          height: 24px;
+          justify-content: center;
+          align-items: center;
+        }
+
+        &Input {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          align-self: stretch;
+          outline: none;
+          border: none;
+
+          color: var(--secondary-dark-gray, #7a7a7a);
+          font-family: 'Work Sans';
+          font-size: 20px;
+          font-style: normal;
+          font-weight: 500;
+          line-height: normal;
+        }
+      }
+
+      .countryFlag {
+        width: 20px;
+        height: 20px;
+      }
+
+      &Dialog {
+        width: 100%;
+      }
+
+      &List {
+        margin-block-start: 0;
+        margin-block-end: 0;
+        padding-inline-start: 0;
+      }
+
+      &Item {
+        display: flex;
+        height: 47px;
+        padding: 12px;
+        align-items: center;
+        gap: 8px;
+        align-self: stretch;
+        cursor: pointer;
+
+        color: var(--secondary-dark-gray, #7a7a7a);
+        font-family: 'Work Sans';
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
+
+        &:hover {
+          background: var(--hover-blue-15, rgba(180, 231, 239, 0.15));
+        }
+
+        &Flag {
+          width: 30px;
+          height: 24px;
+          flex-shrink: 0;
+        }
+      }
+    }
+
+    .numberInput {
+      color: var(--main-black, #414141);
+      font-family: 'Work Sans';
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: normal;
+
+      &::placeholder {
+        color: var(--secondary-dark-gray, #7a7a7a);
+        font-family: 'Work Sans';
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
+      }
+    }
   }
 }

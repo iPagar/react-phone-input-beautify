@@ -18,7 +18,14 @@ function usePhoneInput() {
       'PhoneInput compound components cannot be rendered outside the PhoneInput component'
     );
   }
-  return context;
+  return context as {
+    dialogPosition?: { top: number };
+    phoneInputRef?: React.RefObject<HTMLDivElement>;
+    setDialogPosition: React.Dispatch<React.SetStateAction<{ top: number }>>;
+    setPhoneInputRef: React.Dispatch<
+      React.SetStateAction<React.RefObject<HTMLDivElement>>
+    >;
+  };
 }
 
 function PhoneInputContextProvider({
@@ -26,7 +33,21 @@ function PhoneInputContextProvider({
 }: {
   children?: React.ReactNode;
 }) {
-  const contextValue = useMemo(() => ({}), []);
+  const [phoneInputRef, setPhoneInputRef] =
+    useState<React.RefObject<HTMLButtonElement> | null>(null);
+  const [dialogPosition, setDialogPosition] = useState<{
+    top: number;
+  }>();
+
+  const contextValue = useMemo(
+    () => ({
+      dialogPosition,
+      phoneInputRef,
+      setDialogPosition,
+      setPhoneInputRef,
+    }),
+    [phoneInputRef, dialogPosition]
+  );
 
   return (
     <PhoneInputContext.Provider value={contextValue}>
@@ -35,14 +56,41 @@ function PhoneInputContextProvider({
   );
 }
 
+function PhoneInputDiv(props: React.HTMLAttributes<HTMLDivElement>) {
+  const { phoneInputRef, setDialogPosition, setPhoneInputRef } =
+    usePhoneInput();
+  const { className } = props;
+
+  useEffect(() => {
+    if (phoneInputRef?.current) {
+      const triggerRect = phoneInputRef.current.getBoundingClientRect();
+      // Вычисляем положение относительно родительского элемента
+      const popoverTop = triggerRect.height;
+
+      setDialogPosition({ top: popoverTop });
+    }
+  }, [phoneInputRef]);
+
+  return (
+    <div
+      {...props}
+      className={clsx(styles.phoneInput, className)}
+      ref={(ref) => {
+        if (ref && !phoneInputRef?.current) {
+          setPhoneInputRef({
+            current: ref,
+          });
+        }
+      }}
+    />
+  );
+}
 export function PhoneInput(props: HTMLAttributes<HTMLDivElement>) {
-  const { children, className } = props;
+  const { children } = props;
 
   return (
     <PhoneInputContextProvider>
-      <div {...props} className={clsx(styles.phoneInput, className)}>
-        {children}
-      </div>
+      <PhoneInputDiv {...props}>{children}</PhoneInputDiv>
     </PhoneInputContextProvider>
   );
 }
@@ -51,8 +99,14 @@ PhoneInput.NumberInput = function PhoneInputNumberInput(
   props: React.InputHTMLAttributes<HTMLInputElement>
 ) {
   usePhoneInput();
+  const { className } = props;
 
-  return <input {...props} />;
+  return (
+    <input
+      {...props}
+      className={clsx(styles.phoneInputNumberInput, className)}
+    />
+  );
 };
 
 const PhoneInputCountrySelectContext = React.createContext({});
@@ -65,9 +119,7 @@ export const usePhoneInputCountrySelect = () => {
     );
   }
   return context as {
-    dialogPosition?: { top: number };
     isDialogOpen: boolean;
-    setDialogPosition: React.Dispatch<React.SetStateAction<{ top: number }>>;
     setIsDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
     setTriggerRef: React.Dispatch<
       React.SetStateAction<React.RefObject<HTMLButtonElement>>
@@ -82,22 +134,18 @@ function PhoneInputCountrySelectProvider({
   children?: React.ReactNode;
 }) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [dialogPosition, setDialogPosition] = useState<{
-    top: number;
-  }>();
   const [triggerRef, setTriggerRef] =
     useState<React.RefObject<HTMLButtonElement> | null>(null);
 
   const contextValue = useMemo(
     () => ({
-      dialogPosition,
       isDialogOpen,
-      setDialogPosition,
+
       setIsDialogOpen,
       setTriggerRef,
       triggerRef,
     }),
-    [dialogPosition, isDialogOpen, triggerRef]
+    [isDialogOpen, triggerRef]
   );
 
   return (
@@ -123,32 +171,19 @@ PhoneInput.CountrySelect = function PhoneInputCountrySelect(props: {
 PhoneInput.Trigger = function PhoneInputTrigger(
   props: React.ButtonHTMLAttributes<HTMLButtonElement>
 ) {
-  const {
-    isDialogOpen,
-    setDialogPosition,
-    setIsDialogOpen,
-    setTriggerRef,
-    triggerRef,
-  } = usePhoneInputCountrySelect();
+  const { isDialogOpen, setIsDialogOpen, setTriggerRef, triggerRef } =
+    usePhoneInputCountrySelect();
 
   const handleTogglePopover = () => {
     setIsDialogOpen(!isDialogOpen);
   };
 
-  useEffect(() => {
-    if (triggerRef?.current) {
-      const triggerRect = triggerRef.current.getBoundingClientRect();
-      // Вычисляем положение относительно родительского элемента
-      const popoverTop = triggerRect.height;
-
-      setDialogPosition({ top: popoverTop });
-    }
-  }, [triggerRef]);
-  const { children } = props;
+  const { children, className } = props;
 
   return (
     <button
       {...props}
+      className={clsx(styles.countrySelectTrigger, className)}
       onClick={handleTogglePopover}
       ref={(ref) => {
         if (ref && !triggerRef?.current) {
@@ -192,7 +227,8 @@ PhoneInput.Dialog = function PhoneInputDialog(
   props: React.HTMLAttributes<HTMLDivElement>
 ) {
   const dialogRef = useRef<HTMLDivElement>(null);
-  const { dialogPosition, isDialogOpen, setIsDialogOpen, triggerRef } =
+  const { dialogPosition } = usePhoneInput();
+  const { isDialogOpen, setIsDialogOpen, triggerRef } =
     usePhoneInputCountrySelect();
   useClickOutside([dialogRef, triggerRef], () => {
     if (isDialogOpen) {

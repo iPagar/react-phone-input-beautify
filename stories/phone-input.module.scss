@@ -1,7 +1,21 @@
 .phoneInput {
   position: relative;
 
+  &NumberInput {
+    outline: none;
+    border: none;
+
+    &:-webkit-autofill {
+      -webkit-box-shadow: 0 0 0 30px white inset;
+    }
+  }
+
   .countrySelect {
+    &Trigger {
+      background: none;
+      border: none;
+    }
+
     &Dialog {
       display: none;
       position: absolute;
