@@ -83,6 +83,13 @@
       display: flex;
       align-items: center;
       gap: 4px;
+      cursor: pointer;
+
+      &[data-open='true'] {
+        .countryIcon {
+          transform: rotate(180deg);
+        }
+      }
 
       &Search {
         display: flex;

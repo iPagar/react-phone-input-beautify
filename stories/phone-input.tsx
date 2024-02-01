@@ -184,6 +184,7 @@ PhoneInput.Trigger = function PhoneInputTrigger(
     <button
       {...props}
       className={clsx(styles.countrySelectTrigger, className)}
+      data-open={isDialogOpen}
       onClick={handleTogglePopover}
       ref={(ref) => {
         if (ref && !triggerRef?.current) {
