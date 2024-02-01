@@ -1,6 +1,13 @@
-import React, { useEffect, useRef, useState } from "react";
-import styles from "./phone-input.module.scss";
-import clsx from "clsx";
+import clsx from 'clsx';
+import React, {
+  HTMLAttributes,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
+
+import styles from './phone-input.module.scss';
 
 const PhoneInputContext = React.createContext({});
 
@@ -8,28 +15,44 @@ function usePhoneInputContext() {
   const context = React.useContext(PhoneInputContext);
   if (!context) {
     throw new Error(
-      `PhoneInput compound components cannot be rendered outside the PhoneInput component`
+      'PhoneInput compound components cannot be rendered outside the PhoneInput component'
     );
   }
   return context;
 }
 
-export const PhoneInput = (props: React.HTMLAttributes<HTMLDivElement>) => {
+function PhoneInputContextProvider({
+  children,
+}: {
+  children?: React.ReactNode;
+}) {
+  const contextValue = useMemo(() => ({}), []);
+
   return (
-    <PhoneInputContext.Provider value={{}}>
-      <div {...props} className={clsx(styles.phoneInput, props.className)}>
-        {props.children}
-      </div>
+    <PhoneInputContext.Provider value={contextValue}>
+      {children}
     </PhoneInputContext.Provider>
   );
-};
+}
 
-PhoneInput.NumberInput = (
+export function PhoneInput(props: HTMLAttributes<HTMLDivElement>) {
+  const { children, className } = props;
+
+  return (
+    <PhoneInputContextProvider>
+      <div {...props} className={clsx(styles.phoneInput, className)}>
+        {children}
+      </div>
+    </PhoneInputContextProvider>
+  );
+}
+
+PhoneInput.NumberInput = function PhoneInputNumberInput(
   props: React.InputHTMLAttributes<HTMLInputElement>
-) => {
+) {
   usePhoneInputContext();
 
-  return <input {...props}>{props.children}</input>;
+  return <input {...props} />;
 };
 
 const PhoneInputCountrySelectContext = React.createContext({});
@@ -38,67 +61,72 @@ const usePhoneInputCountrySelectContext = () => {
   const context = React.useContext(PhoneInputCountrySelectContext);
   if (!context) {
     throw new Error(
-      "usePhoneInputCountrySelectContext must be used within a PhoneInputCountrySelectProvider"
+      'usePhoneInputCountrySelectContext must be used within a PhoneInputCountrySelectProvider'
     );
   }
   return context as {
-    isDialogOpen: boolean;
-    setIsDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
     dialogPosition?: { top: number };
+    isDialogOpen: boolean;
     setDialogPosition: React.Dispatch<React.SetStateAction<{ top: number }>>;
-    triggerRef?: React.RefObject<HTMLButtonElement>;
+    setIsDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
     setTriggerRef: React.Dispatch<
       React.SetStateAction<React.RefObject<HTMLButtonElement>>
     >;
+    triggerRef?: React.RefObject<HTMLButtonElement>;
   };
 };
 
-const PhoneInputCountrySelectProvider = ({
+function PhoneInputCountrySelectProvider({
   children,
 }: {
   children?: React.ReactNode;
-}) => {
+}) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [dialogPosition, setDialogPosition] = useState<{
     top: number;
-    left: number;
   }>();
   const [triggerRef, setTriggerRef] =
     useState<React.RefObject<HTMLButtonElement> | null>(null);
 
-  const contextValue = {
-    isDialogOpen,
-    setIsDialogOpen,
-    dialogPosition,
-    setDialogPosition,
-    triggerRef,
-    setTriggerRef,
-  };
+  const contextValue = useMemo(
+    () => ({
+      dialogPosition,
+      isDialogOpen,
+      setDialogPosition,
+      setIsDialogOpen,
+      setTriggerRef,
+      triggerRef,
+    }),
+    [dialogPosition, isDialogOpen, triggerRef]
+  );
 
   return (
     <PhoneInputCountrySelectContext.Provider value={contextValue}>
       {children}
     </PhoneInputCountrySelectContext.Provider>
   );
-};
+}
 
-PhoneInput.CountrySelect = (props: { children?: React.ReactNode }) => {
+PhoneInput.CountrySelect = function PhoneInputCountrySelect(props: {
+  children?: React.ReactNode;
+}) {
   usePhoneInputContext();
+  const { children } = props;
 
   return (
     <PhoneInputCountrySelectProvider>
-      {props.children}
+      {children}
     </PhoneInputCountrySelectProvider>
   );
 };
 
-PhoneInput.CountrySelectTrigger = (
+PhoneInput.CountrySelectTrigger = function PhoneInputCountrySelectTrigger(
   props: React.ButtonHTMLAttributes<HTMLButtonElement>
-) => {
+) {
   const {
     isDialogOpen,
-    setIsDialogOpen,
     setDialogPosition,
+    setIsDialogOpen,
     setTriggerRef,
     triggerRef,
   } = usePhoneInputCountrySelectContext();
@@ -116,10 +144,12 @@ PhoneInput.CountrySelectTrigger = (
       setDialogPosition({ top: popoverTop });
     }
   }, [triggerRef]);
+  const { children } = props;
 
   return (
     <button
       {...props}
+      onClick={handleTogglePopover}
       ref={(ref) => {
         if (ref && !triggerRef?.current) {
           setTriggerRef({
@@ -127,9 +157,9 @@ PhoneInput.CountrySelectTrigger = (
           });
         }
       }}
-      onClick={handleTogglePopover}
+      type="button"
     >
-      {props.children}
+      {children}
     </button>
   );
 };
@@ -137,9 +167,7 @@ PhoneInput.CountrySelectTrigger = (
 const handleClickOutside = (
   event: MouseEvent,
   refs: (React.RefObject<HTMLElement> | undefined)[]
-) => {
-  return !refs.some((ref) => ref?.current?.contains(event.target as Node));
-};
+) => !refs.some((ref) => ref?.current?.contains(event.target as Node));
 
 function useClickOutside(
   refs: (React.RefObject<HTMLElement> | undefined)[],
@@ -152,40 +180,41 @@ function useClickOutside(
       }
     };
 
-    document.addEventListener("mousedown", listener);
+    document.addEventListener('mousedown', listener);
 
     return () => {
-      document.removeEventListener("mousedown", listener);
+      document.removeEventListener('mousedown', listener);
     };
   }, [refs, handler]);
 }
 
-PhoneInput.CountrySelectDialog = (
+PhoneInput.CountrySelectDialog = function PhoneInputCountrySelectDialog(
   props: React.HTMLAttributes<HTMLDivElement>
-) => {
+) {
   const dialogRef = useRef<HTMLDivElement>(null);
-  const { isDialogOpen, dialogPosition, setIsDialogOpen, triggerRef } =
+  const { dialogPosition, isDialogOpen, setIsDialogOpen, triggerRef } =
     usePhoneInputCountrySelectContext();
   useClickOutside([dialogRef, triggerRef], () => {
     if (isDialogOpen) {
       setIsDialogOpen(false);
     }
   });
+  const { children, className } = props;
 
   if (!dialogPosition) return null;
 
   return (
     <div
       {...props}
-      ref={dialogRef}
       className={clsx(
         styles.countrySelectDialog,
-        props.className,
+        className,
         isDialogOpen && styles.countrySelectDialogOpen
       )}
+      ref={dialogRef}
       style={{ top: dialogPosition.top }}
     >
-      {props.children}
+      {children}
     </div>
   );
 };

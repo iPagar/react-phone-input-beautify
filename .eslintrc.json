@@ -1,0 +1,43 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "extends": [
+    "plugin:perfectionist/recommended-natural",
+    "eslint:recommended",
+    "airbnb",
+    "plugin:storybook/recommended"
+  ],
+  "rules": {
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-filename-extension": [
+      "error",
+      {
+        "extensions": [".tsx"]
+      }
+    ],
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "ts": "never",
+        "tsx": "never"
+      }
+    ],
+    "object-curly-newline": "off",
+    "react/jsx-props-no-spreading": "off",
+    "operator-linebreak": "off",
+    "react/require-default-props": "off",
+    "react/prop-types": "off",
+    "no-undef": "off",
+    "comma-dangle": "off",
+    "no-unused-vars": "off",
+    "import/prefer-default-export": "off",
+    "object-curly-spacing": "off"
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    }
+  }
+}
