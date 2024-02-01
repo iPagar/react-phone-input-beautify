@@ -11,7 +11,7 @@ import styles from './phone-input.module.scss';
 
 const PhoneInputContext = React.createContext({});
 
-function usePhoneInputContext() {
+function usePhoneInput() {
   const context = React.useContext(PhoneInputContext);
   if (!context) {
     throw new Error(
@@ -50,18 +50,18 @@ export function PhoneInput(props: HTMLAttributes<HTMLDivElement>) {
 PhoneInput.NumberInput = function PhoneInputNumberInput(
   props: React.InputHTMLAttributes<HTMLInputElement>
 ) {
-  usePhoneInputContext();
+  usePhoneInput();
 
   return <input {...props} />;
 };
 
 const PhoneInputCountrySelectContext = React.createContext({});
 
-const usePhoneInputCountrySelectContext = () => {
+export const usePhoneInputCountrySelect = () => {
   const context = React.useContext(PhoneInputCountrySelectContext);
   if (!context) {
     throw new Error(
-      'usePhoneInputCountrySelectContext must be used within a PhoneInputCountrySelectProvider'
+      'usePhoneInputCountrySelect must be used within a PhoneInputCountrySelectProvider'
     );
   }
   return context as {
@@ -110,7 +110,7 @@ function PhoneInputCountrySelectProvider({
 PhoneInput.CountrySelect = function PhoneInputCountrySelect(props: {
   children?: React.ReactNode;
 }) {
-  usePhoneInputContext();
+  usePhoneInput();
   const { children } = props;
 
   return (
@@ -129,7 +129,7 @@ PhoneInput.CountrySelectTrigger = function PhoneInputCountrySelectTrigger(
     setIsDialogOpen,
     setTriggerRef,
     triggerRef,
-  } = usePhoneInputCountrySelectContext();
+  } = usePhoneInputCountrySelect();
 
   const handleTogglePopover = () => {
     setIsDialogOpen(!isDialogOpen);
@@ -193,7 +193,7 @@ PhoneInput.CountrySelectDialog = function PhoneInputCountrySelectDialog(
 ) {
   const dialogRef = useRef<HTMLDivElement>(null);
   const { dialogPosition, isDialogOpen, setIsDialogOpen, triggerRef } =
-    usePhoneInputCountrySelectContext();
+    usePhoneInputCountrySelect();
   useClickOutside([dialogRef, triggerRef], () => {
     if (isDialogOpen) {
       setIsDialogOpen(false);
@@ -216,5 +216,40 @@ PhoneInput.CountrySelectDialog = function PhoneInputCountrySelectDialog(
     >
       {children}
     </div>
+  );
+};
+
+PhoneInput.CountrySelectItem = function PhoneInputCountrySelectItem(
+  props: React.LiHTMLAttributes<HTMLLIElement>
+) {
+  const { children, className, onClick, onKeyDown, value } = props;
+  const { setIsDialogOpen } = usePhoneInputCountrySelect();
+
+  const handleSelect = (e: React.MouseEvent<HTMLLIElement>) => {
+    onClick?.(e);
+
+    setIsDialogOpen(false);
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLLIElement>) => {
+    if (event.key === 'Enter') {
+      onKeyDown?.(event);
+
+      setIsDialogOpen(false);
+    }
+  };
+
+  return (
+    <li
+      {...props}
+      aria-selected="false"
+      className={clsx(styles.countrySelectItem, className)}
+      onClick={handleSelect}
+      onKeyDown={handleKeyDown}
+      role="option"
+      value={value}
+    >
+      {children}
+    </li>
   );
 };
