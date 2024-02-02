@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import { PhoneInput } from './phone-input';
 import styles from './phone-input-stories.module.scss';
@@ -28,7 +28,7 @@ export function Input() {
 
   const pickCountry = useCallback(
     (e: React.KeyboardEvent | React.MouseEvent) => {
-      const target = e.target as HTMLLIElement;
+      const target = e.currentTarget as HTMLLIElement;
       handleCountryChange(target.innerText);
     },
     []
@@ -127,6 +127,7 @@ export function Form() {
 export function Styled() {
   const {
     country,
+    countryList,
     handleCountryChange,
     handlePhoneNumberChange,
     isValid,
@@ -135,10 +136,15 @@ export function Styled() {
 
   const pickCountry = useCallback(
     (e: React.KeyboardEvent | React.MouseEvent) => {
-      const target = e.target as HTMLLIElement;
-      handleCountryChange(target.innerText);
+      const target = e.currentTarget as HTMLLIElement;
+      handleCountryChange(target.dataset.value as unknown as string);
     },
     []
+  );
+
+  const [search, setSearch] = useState('');
+  const searchCountryList = countryList.filter((countryItem) =>
+    countryItem.name.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
@@ -189,41 +195,34 @@ export function Styled() {
                   />
                 </svg>
               </div>
-              <input className={styles.countrySelectSearchInput} />
+              <input
+                className={styles.countrySelectSearchInput}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Search"
+                type="text"
+                value={search}
+              />
             </div>
             <ul className={styles.countrySelectList}>
-              <PhoneInput.Item
-                aria-selected="true"
-                className={styles.countrySelectItem}
-                onClick={pickCountry}
-                onKeyDown={pickCountry}
-                role="option"
-                tabIndex={0}
-                value="1"
-              >
-                <img
-                  alt=""
-                  className={styles.countrySelectItemFlag}
-                  src="https://flagsapi.com/US/flat/64.png"
-                />
-                <span>US</span>
-              </PhoneInput.Item>
-              <PhoneInput.Item
-                aria-selected="false"
-                className={styles.countrySelectItem}
-                onClick={pickCountry}
-                onKeyDown={pickCountry}
-                role="option"
-                tabIndex={0}
-                value="44"
-              >
-                <img
-                  alt=""
-                  className={styles.countrySelectItemFlag}
-                  src="https://flagsapi.com/RU/flat/64.png"
-                />
-                <span>RU</span>
-              </PhoneInput.Item>
+              {searchCountryList.map((countryItem) => (
+                <PhoneInput.Item
+                  aria-selected="true"
+                  className={styles.countrySelectItem}
+                  data-value={countryItem.alpha2}
+                  key={countryItem.alpha2}
+                  onClick={pickCountry}
+                  onKeyDown={pickCountry}
+                  role="option"
+                  tabIndex={0}
+                >
+                  <img
+                    alt=""
+                    className={styles.countrySelectItemFlag}
+                    src={`https://flagsapi.com/${countryItem.alpha2}/flat/64.png`}
+                  />
+                  <span>{countryItem.name}</span>
+                </PhoneInput.Item>
+              ))}
             </ul>
           </PhoneInput.Dialog>
         </PhoneInput.CountrySelect>
@@ -252,6 +251,7 @@ export function Styled() {
 export function Hook() {
   const {
     country,
+    countryList,
     handleCountryChange,
     handlePhoneNumberChange,
     isValid,
@@ -265,9 +265,15 @@ export function Hook() {
         e.preventDefault();
       }}
     >
-      <select onChange={(e) => handleCountryChange(e.target.value)}>
-        <option value="US">US</option>
-        <option value="RU">RU</option>
+      <select
+        onChange={(e) => handleCountryChange(e.target.value)}
+        value={country}
+      >
+        {countryList.map((countryItem) => (
+          <option key={countryItem.alpha2} value={countryItem.alpha2}>
+            {countryItem.name}
+          </option>
+        ))}
       </select>
       <input
         className={styles.numberInput}
