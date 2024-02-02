@@ -67,7 +67,7 @@ function PhoneInputDiv(props: React.HTMLAttributes<HTMLDivElement>) {
   useEffect(() => {
     if (phoneInputRef?.current) {
       const triggerRect = phoneInputRef.current.getBoundingClientRect();
-      // Вычисляем положение относительно родительского элемента
+      // Calculate the top position of the dialog
       const popoverTop = triggerRect.height;
 
       setDialogPosition({ top: popoverTop });
@@ -143,7 +143,6 @@ function PhoneInputCountrySelectProvider({
   const contextValue = useMemo(
     () => ({
       isDialogOpen,
-
       setIsDialogOpen,
       setTriggerRef,
       triggerRef,
