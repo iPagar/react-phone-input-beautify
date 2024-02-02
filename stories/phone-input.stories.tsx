@@ -1,7 +1,8 @@
 import clsx from 'clsx';
 import React, { useCallback, useState } from 'react';
 
-import { CountryFlag, PhoneInput } from './phone-input';
+import { CountryFlag } from './country-flag/country-flag';
+import { PhoneInput } from './phone-input';
 import styles from './phone-input-stories.module.scss';
 import { usePhoneInput } from './use-phone-input';
 
