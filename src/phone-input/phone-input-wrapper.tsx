@@ -1,0 +1,35 @@
+import clsx from 'clsx';
+import React, { useEffect } from 'react';
+
+import styles from './phone-input.module.scss';
+import { usePhoneInput } from './phone-input-provider';
+
+export function PhoneInputWrapper(props: React.HTMLAttributes<HTMLDivElement>) {
+  const { phoneInputRef, setDialogPosition, setPhoneInputRef } =
+    usePhoneInput();
+  const { className } = props;
+
+  useEffect(() => {
+    if (phoneInputRef?.current) {
+      const triggerRect = phoneInputRef.current.getBoundingClientRect();
+      // Calculate the top position of the dialog
+      const popoverTop = triggerRect.height;
+
+      setDialogPosition({ top: popoverTop });
+    }
+  }, [phoneInputRef]);
+
+  return (
+    <div
+      {...props}
+      className={clsx(styles.phoneInput, className)}
+      ref={(ref) => {
+        if (ref && !phoneInputRef?.current) {
+          setPhoneInputRef({
+            current: ref,
+          });
+        }
+      }}
+    />
+  );
+}
