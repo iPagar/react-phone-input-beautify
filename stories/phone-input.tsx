@@ -341,7 +341,7 @@ export function CountryFlag(props: {
 CountryFlag.Img = function CountryFlagImg(props: HTMLProps<HTMLImageElement>) {
   const { country } = useCountryFlag();
   const { className } = props;
-  console.log(country, 'joihni');
+
   return (
     <img
       {...props}
