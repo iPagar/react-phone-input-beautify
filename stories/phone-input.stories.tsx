@@ -140,7 +140,6 @@ export function Styled() {
     },
     []
   );
-  const [focused, setFocused] = React.useState(false);
 
   return (
     <form
@@ -238,16 +237,49 @@ export function Styled() {
           <PhoneInput.NumberInput
             className={styles.numberInput}
             id="phone"
-            onBlur={() => setFocused(false)}
             onChange={(e) => {
               handlePhoneNumberChange(e.target.value);
             }}
-            onFocus={() => setFocused(true)}
             type="tel"
             value={phoneNumber}
           />
         </div>
       </PhoneInput>
+    </form>
+  );
+}
+
+export function OnlyHook() {
+  const {
+    country,
+    handleCountryChange,
+    handlePhoneNumberChange,
+    isValid,
+    phoneNumber,
+  } = usePhoneInput();
+
+  return (
+    <form
+      className={styles.form}
+      onSubmit={(e) => {
+        e.preventDefault();
+      }}
+    >
+      <select onChange={(e) => handleCountryChange(e.target.value)}>
+        <option value="US">US</option>
+        <option value="RU">RU</option>
+      </select>
+      <input
+        className={styles.numberInput}
+        onChange={(e) => {
+          handlePhoneNumberChange(e.target.value);
+        }}
+        placeholder="Phone"
+        type="tel"
+        value={phoneNumber}
+      />
+      <span>{isValid ? 'Valid' : 'Invalid'}</span>
+      <span>{`${country}: ${phoneNumber}`}</span>
     </form>
   );
 }

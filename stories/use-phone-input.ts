@@ -2,8 +2,18 @@ import {
   AsYouType,
   CountryCode,
   getCountryCallingCode,
+  isValidPhoneNumber,
 } from 'libphonenumber-js';
 import { useState } from 'react';
+import z from 'zod';
+
+export const phoneValidationSchema = z.string().refine((value) => {
+  try {
+    return isValidPhoneNumber(value);
+  } catch (error) {
+    return false;
+  }
+});
 
 export const usePhoneInput = (
   initialCountry = 'US',
