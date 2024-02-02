@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "vite build && tsc --emitDeclarationOnly",
     "test": "echo \"Error: no test specified\" && exit 1",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
@@ -22,7 +23,9 @@
     "libphonenumber-js": "^1.10.54",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "zod": "^3.22.4"
+    "zod": "^3.22.4",
+    "vite": "^4.5.2",
+    "@vitejs/plugin-react": "^4.2.1"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.23.10",
