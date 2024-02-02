@@ -1,10 +1,10 @@
 import clsx from 'clsx';
 import React, { useCallback, useState } from 'react';
 
-import { CountryFlag } from './country-flag/country-flag';
-import { PhoneInput } from './phone-input/phone-input';
+import { CountryFlag } from '../src/country-flag/country-flag';
+import { PhoneInput } from '../src/phone-input/phone-input';
+import { usePhoneInput } from '../src/use-phone-input';
 import styles from './phone-input-stories.module.scss';
-import { usePhoneInput } from './use-phone-input';
 
 export default {
   argTypes: {
