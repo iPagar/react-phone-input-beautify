@@ -15,6 +15,11 @@ export const phoneValidationSchema = z.string().refine((value) => {
   }
 });
 
+/**
+
+* @param initialCountry - format is ISO 3166-1 alpha-2
+ * @param initialPhoneNumber - format is "+{countryCallingCode}{number}"
+ */
 export const usePhoneInput = (
   initialCountry = 'US',
   initialPhoneNumber = ''
@@ -23,6 +28,11 @@ export const usePhoneInput = (
   const [phoneNumber, setPhoneNumber] = useState(initialPhoneNumber);
   const [isValid, setIsValid] = useState(false);
 
+  /**
+   *
+   * @param newCountry - format is ISO 3166-1 alpha-2
+   * @example "US", "RU", "GB"
+   */
   const handleCountryChange = (newCountry: string) => {
     setCountry(newCountry);
 
@@ -35,6 +45,10 @@ export const usePhoneInput = (
     }
   };
 
+  /**
+   *
+   * @param newPhoneNumber - any string
+   */
   const handlePhoneNumberChange = (newPhoneNumber: string) => {
     let phone = newPhoneNumber;
 
