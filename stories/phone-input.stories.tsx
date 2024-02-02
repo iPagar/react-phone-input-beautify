@@ -249,7 +249,7 @@ export function Styled() {
   );
 }
 
-export function OnlyHook() {
+export function Hook() {
   const {
     country,
     handleCountryChange,
