@@ -16,6 +16,7 @@
   "license": "ISC",
   "dependencies": {
     "clsx": "^2.1.0",
+    "country-flag-icons": "^1.5.9",
     "iso-3166": "^4.3.0",
     "libphonenumber-js": "^1.10.54",
     "react": "^18.2.0",

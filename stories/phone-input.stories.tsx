@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import React, { useCallback, useState } from 'react';
 
-import { PhoneInput } from './phone-input';
+import { CountryFlag, PhoneInput } from './phone-input';
 import styles from './phone-input-stories.module.scss';
 import { usePhoneInput } from './use-phone-input';
 
@@ -46,11 +46,9 @@ export function Input() {
         <PhoneInput className={styles.phoneInput}>
           <PhoneInput.CountrySelect>
             <PhoneInput.Trigger className={styles.countrySelect}>
-              <img
-                alt=""
-                className={styles.countryFlag}
-                src={`https://flagsapi.com/${country}/flat/64.png`}
-              />
+              <CountryFlag country={country}>
+                <CountryFlag.Img className={styles.countryFlag} />
+              </CountryFlag>
               {country}
             </PhoneInput.Trigger>
             <PhoneInput.Dialog className={styles.countrySelectDialog}>
@@ -159,11 +157,9 @@ export function Styled() {
       >
         <PhoneInput.CountrySelect>
           <PhoneInput.Trigger className={styles.countrySelect}>
-            <img
-              alt=""
-              className={styles.countryFlag}
-              src={`https://flagsapi.com/${country}/flat/64.png`}
-            />
+            <CountryFlag country={country}>
+              <CountryFlag.Img className={styles.countryFlag} />
+            </CountryFlag>
             <div className={styles.countryIcon}>
               <svg
                 fill="none"
@@ -287,5 +283,38 @@ export function Hook() {
       <span>{isValid ? 'Valid' : 'Invalid'}</span>
       <span>{`${country}: ${phoneNumber}`}</span>
     </form>
+  );
+}
+
+export function Flags() {
+  const { country, countryList, handleCountryChange } = usePhoneInput();
+
+  return (
+    <div className={styles.flags}>
+      <select
+        onChange={(e) => handleCountryChange(e.target.value)}
+        value={country}
+      >
+        {countryList.map((countryItem) => (
+          <option key={countryItem.alpha2} value={countryItem.alpha2}>
+            {countryItem.name}
+          </option>
+        ))}
+      </select>
+      <div className={styles.flagGroup}>
+        <div className={styles.flag}>
+          <span>IMG</span>
+          <CountryFlag country={country}>
+            <CountryFlag.Img className={styles.countryFlag} />
+          </CountryFlag>
+        </div>
+        <div className={styles.flag}>
+          <span>SVG</span>
+          <CountryFlag country={country}>
+            <CountryFlag.Svg className={styles.countryFlag} />
+          </CountryFlag>
+        </div>
+      </div>
+    </div>
   );
 }

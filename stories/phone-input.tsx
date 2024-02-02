@@ -1,6 +1,9 @@
 import clsx from 'clsx';
+import * as flags from 'country-flag-icons/react/3x2';
 import React, {
   HTMLAttributes,
+  HTMLProps,
+  ReactNode,
   useEffect,
   useMemo,
   useRef,
@@ -289,4 +292,72 @@ PhoneInput.Item = function PhoneInputItem(
       {children}
     </li>
   );
+};
+
+const CountryFlagContext = React.createContext({});
+
+function useCountryFlag() {
+  const context = React.useContext(CountryFlagContext);
+  if (!context) {
+    throw new Error(
+      'CountryFlag compound components cannot be rendered outside the CountryFlag component'
+    );
+  }
+  return context as {
+    country: string;
+  };
+}
+
+export function CountryFlagProvider({
+  children,
+  country,
+}: {
+  children?: React.ReactNode;
+  country: string;
+}) {
+  const contextValue = useMemo(() => ({ country }), [country]);
+
+  return (
+    <CountryFlagContext.Provider value={contextValue}>
+      {children}
+    </CountryFlagContext.Provider>
+  );
+}
+
+export function CountryFlag(props: {
+  children?: ReactNode;
+  /**
+   * Country code in ISO 3166-1 alpha-2 format
+   */
+  country: string;
+}) {
+  const { children, country } = props;
+
+  return (
+    <CountryFlagProvider country={country}>{children}</CountryFlagProvider>
+  );
+}
+
+CountryFlag.Img = function CountryFlagImg(props: HTMLProps<HTMLImageElement>) {
+  const { country } = useCountryFlag();
+  const { className } = props;
+  console.log(country, 'joihni');
+  return (
+    <img
+      {...props}
+      alt={country}
+      className={clsx(styles.countryFlag, className)}
+      src={`https://flagsapi.com/${country}/flat/64.png`}
+    />
+  );
+};
+
+CountryFlag.Svg = function CountryFlagSVG(
+  props: HTMLProps<flags.HTMLSVGElement>
+) {
+  const { country } = useCountryFlag();
+  const { className } = props;
+  const Flag = flags[country as keyof typeof flags];
+
+  return <Flag {...props} className={clsx(styles.countryFlag, className)} />;
 };
