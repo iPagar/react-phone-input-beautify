@@ -29,14 +29,13 @@ const schema = z.object({
   phone: phoneValidationSchema(),
 });
 
+type FormPhoneInputProps = {
+  name: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+} & HTMLProps<HTMLInputElement>;
+
 const FormPhoneInput = forwardRef(
-  (
-    props: {
-      name: string;
-      onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    } & HTMLProps<HTMLInputElement>,
-    ref: React.Ref<HTMLInputElement>
-  ) => {
+  (props: FormPhoneInputProps, ref: React.Ref<HTMLInputElement>) => {
     const { onChange } = props;
     const [country, setCountry] = useState('US');
     const [search, setSearch] = useState('');
@@ -83,12 +82,7 @@ const FormPhoneInput = forwardRef(
                 </ul>
               </>
             </PhoneInput.Dialog>
-            <PhoneInput.NumberInput
-              {...props}
-              onChange={onChange}
-              placeholder="Phone"
-              ref={ref}
-            />
+            <PhoneInput.NumberInput {...props} onChange={onChange} ref={ref} />
           </>
         )}
       </PhoneInput.Root>
@@ -118,7 +112,7 @@ export function ReactHookFormAndZod() {
     >
       <input placeholder="Name" type="text" {...register('name')} />
       {errors.name && <span>{errors.name.message}</span>}
-      <FormPhoneInput {...register('phone')} />
+      <FormPhoneInput {...register('phone')} placeholder="Phone" />
       {errors.phone && <span>{errors.phone.message}</span>}
       <button type="submit">Submit</button>
 
