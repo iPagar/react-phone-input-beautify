@@ -11,11 +11,11 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 import { CountryFlag } from '../src/country-flag/country-flag';
-import { PhoneInput } from '../src/phone-input/phone-input';
+import { PhoneInput, usePhone } from '../src/phone-input/phone-input';
 import {
   phoneValidationSchema,
-  usePhoneInput,
-} from '../src/use-phone-input/use-phone-input';
+  usePhoneState,
+} from '../src/use-phone-state/use-phone-state';
 import styles from './phone-input-stories.module.scss';
 
 export default {
@@ -37,7 +37,7 @@ export function Input() {
     handlePhoneNumberChange,
     isValid,
     phoneNumber,
-  } = usePhoneInput();
+  } = usePhoneState();
 
   const pickCountry = useCallback(
     (e: React.KeyboardEvent | React.MouseEvent) => {
@@ -120,7 +120,7 @@ const FormPhoneInput = forwardRef(
     } & HTMLProps<HTMLInputElement>,
     ref: React.Ref<HTMLInputElement>
   ) => {
-    const { handlePhoneNumberChange, phoneNumber } = usePhoneInput();
+    const { handlePhoneNumberChange, phoneNumber } = usePhoneState();
     const { onChange } = props;
 
     useEffect(() => {
@@ -185,7 +185,7 @@ export function Styled() {
     handlePhoneNumberChange,
     isValid,
     phoneNumber,
-  } = usePhoneInput();
+  } = usePhoneState();
   const [search, setSearch] = useState('');
 
   const pickCountry = useCallback(
@@ -304,7 +304,7 @@ export function StyledWithAnimation() {
     handlePhoneNumberChange,
     isValid,
     phoneNumber,
-  } = usePhoneInput();
+  } = usePhoneState();
   const [search, setSearch] = useState('');
 
   const pickCountry = useCallback(
@@ -424,14 +424,19 @@ export function StyledWithAnimation() {
 }
 
 export function Hook() {
+  const state = usePhoneState();
+  const [isOpen, setIsOpen] = useState(false);
   const {
-    country,
-    countryList,
-    handleCountryChange,
-    handlePhoneNumberChange,
-    isValid,
-    phoneNumber,
-  } = usePhoneInput();
+    getListItemProps,
+    numberInputProps,
+    phoneInputDialogProps,
+    triggerProps,
+  } = usePhone(
+    {
+      isDialogOpen: isOpen,
+    },
+    state
+  );
 
   return (
     <form
@@ -440,33 +445,59 @@ export function Hook() {
         e.preventDefault();
       }}
     >
-      <select
-        onChange={(e) => handleCountryChange(e.target.value)}
-        value={country}
-      >
-        {countryList.map((countryItem) => (
-          <option key={countryItem.alpha2} value={countryItem.alpha2}>
-            {countryItem.name}
-          </option>
-        ))}
-      </select>
-      <input
-        className={styles.numberInput}
-        onChange={(e) => {
-          handlePhoneNumberChange(e.target.value);
-        }}
-        placeholder="Phone"
-        type="tel"
-        value={phoneNumber}
-      />
-      <span>{isValid ? 'Valid' : 'Invalid'}</span>
-      <span>{`${country}: ${phoneNumber}`}</span>
+      <div className={styles.phoneInput}>
+        <button
+          onClick={() => setIsOpen((prev) => !prev)}
+          {...triggerProps}
+          className={styles.countrySelect}
+        >
+          <CountryFlag className={styles.countryFlag} country={state.country} />
+        </button>
+        <div
+          {...phoneInputDialogProps}
+          className={clsx(
+            styles.countrySelectDialog,
+            isOpen && styles.countrySelectDialogOpen
+          )}
+        >
+          {state.countryList.map((countryItem) => (
+            <li
+              key={countryItem.alpha2}
+              value={countryItem.alpha2}
+              {...getListItemProps({ value: countryItem.alpha2 })}
+              onClick={() => {
+                state.handleCountryChange(countryItem.alpha2);
+                setIsOpen(false);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  state.handleCountryChange(countryItem.alpha2);
+                  setIsOpen(false);
+                }
+              }}
+            >
+              {countryItem.name}
+            </li>
+          ))}
+        </div>
+        <input
+          {...numberInputProps}
+          className={clsx(styles.numberInput, numberInputProps.className)}
+          onChange={(e) => {
+            state.handlePhoneNumberChange(e.target.value);
+          }}
+          placeholder="Phone"
+          value={state.phoneNumber}
+        />
+      </div>
+      <span>{state.isValid ? 'Valid' : 'Invalid'}</span>
+      <span>{`${state.country}: ${state.phoneNumber}`}</span>
     </form>
   );
 }
 
 export function Flags() {
-  const { country, countryList, handleCountryChange } = usePhoneInput();
+  const { country, countryList, handleCountryChange } = usePhoneState();
 
   return (
     <div className={styles.flags}>

@@ -21,3 +21,12 @@ export const PhoneInputNumberInput = forwardRef(
     );
   }
 );
+
+export function usePhoneInputNumberInput() {
+  return {
+    numberInputProps: {
+      className: styles.phoneInputNumberInput,
+      type: 'tel',
+    },
+  };
+}

@@ -37,7 +37,9 @@
     "jsx-a11y/label-has-associated-control": "off",
     "implicit-arrow-linebreak": "off",
     "function-paren-newline": "off",
-    "jsx-a11y/no-autofocus": "off"
+    "jsx-a11y/no-autofocus": "off",
+    "react/button-has-type": "off",
+    "jsx-a11y/no-noninteractive-element-interactions": "off"
   },
   "settings": {
     "import/resolver": {

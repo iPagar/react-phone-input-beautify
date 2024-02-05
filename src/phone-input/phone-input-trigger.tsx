@@ -35,3 +35,12 @@ export function PhoneInputTrigger(
     </button>
   );
 }
+
+export function usePhoneInputTrigger() {
+  return {
+    triggerProps: {
+      'aria-label': 'Select country',
+      type: 'button',
+    } as const,
+  };
+}

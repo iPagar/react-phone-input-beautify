@@ -44,3 +44,11 @@ export function PhoneInputDialog(
     </div>
   );
 }
+
+export function usePhoneInputDialog(props: { open: boolean }) {
+  return {
+    phoneInputDialogProps: {
+      'aria-hidden': !props.open,
+    },
+  };
+}

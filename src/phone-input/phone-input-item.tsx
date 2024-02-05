@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React from 'react';
+import React, { useCallback } from 'react';
 
 import styles from './phone-input.module.scss';
 import { usePhoneInputCountrySelect } from './phone-input-country-select-context';
@@ -25,7 +25,7 @@ export function PhoneInputItem(props: React.LiHTMLAttributes<HTMLLIElement>) {
   return (
     <li
       {...props}
-      aria-selected="false"
+      aria-selected={false}
       className={clsx(styles.countrySelectItem, className)}
       onClick={handleSelect}
       onKeyDown={handleKeyDown}
@@ -35,4 +35,23 @@ export function PhoneInputItem(props: React.LiHTMLAttributes<HTMLLIElement>) {
       {children}
     </li>
   );
+}
+
+// Расширение типов пропсов для хука
+type UsePhoneInputItemProps = {
+  selected: string;
+};
+
+export function usePhoneInputItem(props: UsePhoneInputItemProps) {
+  const { selected } = props;
+
+  return {
+    getListItemProps: useCallback(
+      (itemProps: { value: string }) => ({
+        'aria-selected': selected === itemProps.value,
+        role: 'option' as const,
+      }),
+      [selected]
+    ),
+  };
 }

@@ -40,7 +40,7 @@ export function formatPhoneNumber(phoneNumber: string) {
  * @param initialCountry - format is ISO 3166-1 alpha-2
  * @param initialPhoneNumber - any string
  */
-export const usePhoneInput = (
+export const usePhoneState = (
   initialCountry = 'US',
   initialPhoneNumber = ''
 ) => {

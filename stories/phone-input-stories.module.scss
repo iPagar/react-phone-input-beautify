@@ -3,6 +3,7 @@
 }
 
 .form {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -449,5 +450,38 @@
       line-height: normal;
       opacity: 0.7;
     }
+  }
+}
+
+.countrySelectDialog {
+  display: none;
+  position: absolute;
+  background-color: white;
+  max-height: 200px;
+  overflow: auto;
+
+  &Open {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.phoneInput {
+  display: flex;
+  gap: 8px;
+}
+
+.countrySelect {
+  background: none;
+  appearance: none;
+  width: 32px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  cursor: pointer;
+
+  & .countryFlag {
+    width: 32px;
+    height: 24px;
   }
 }
