@@ -6,7 +6,13 @@ import styles from './phone-input.module.scss';
 import { usePhoneInputCountrySelect } from './phone-input-country-select-context';
 import { usePhoneInput } from './phone-input-provider';
 
-export function PhoneInputDialog(props: React.HTMLAttributes<HTMLDivElement>) {
+export function PhoneInputDialog(
+  props: Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> & {
+    children?:
+      | (({ open }: { open: boolean }) => React.ReactNode)
+      | React.ReactNode;
+  }
+) {
   const dialogRef = useRef<HTMLDivElement>(null);
   const { dialogPosition } = usePhoneInput();
   const { isDialogOpen, setIsDialogOpen, triggerRef } =
@@ -32,7 +38,9 @@ export function PhoneInputDialog(props: React.HTMLAttributes<HTMLDivElement>) {
       ref={dialogRef}
       style={{ top: dialogPosition.top }}
     >
-      {children}
+      {typeof children === 'function'
+        ? children({ open: isDialogOpen })
+        : children}
     </div>
   );
 }
