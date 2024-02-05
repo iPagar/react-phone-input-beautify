@@ -200,13 +200,11 @@ export function Styled() {
             <ul className={styles.countrySelectList}>
               {searchCountryList.map((countryItem) => (
                 <PhoneInput.Item
-                  aria-selected="true"
                   className={styles.countrySelectItem}
                   data-value={countryItem.alpha2}
                   key={countryItem.alpha2}
                   onClick={pickCountry}
                   onKeyDown={pickCountry}
-                  role="option"
                   tabIndex={0}
                 >
                   <CountryFlag
@@ -214,7 +212,6 @@ export function Styled() {
                     country={countryItem.alpha2}
                     type="svg"
                   />
-
                   <span>{countryItem.name}</span>
                 </PhoneInput.Item>
               ))}

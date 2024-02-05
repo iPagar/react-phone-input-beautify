@@ -151,6 +151,7 @@
         line-height: normal;
 
         &:hover {
+          color: var(--main-black, #414141);
           background: var(--hover-blue-15, rgba(180, 231, 239, 0.15));
         }
 
