@@ -1,9 +1,15 @@
+import { zodResolver } from '@hookform/resolvers/zod';
 import clsx from 'clsx';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { z } from 'zod';
 
 import { CountryFlag } from '../src/country-flag/country-flag';
 import { PhoneInput } from '../src/phone-input/phone-input';
-import { usePhoneInput } from '../src/use-phone-input/use-phone-input';
+import {
+  phoneValidationSchema,
+  usePhoneInput,
+} from '../src/use-phone-input/use-phone-input';
 import styles from './phone-input-stories.module.scss';
 
 export default {
@@ -93,30 +99,74 @@ export function Input() {
   );
 }
 
-export function Form() {
+const schema = z.object({
+  name: z.string().min(1, { message: 'Required' }),
+  phone: phoneValidationSchema(),
+});
+
+function FormPhoneInput(props: { onChange: (value: string) => void }) {
+  const {
+    country,
+    countryList,
+    handleCountryChange,
+    handlePhoneNumberChange,
+    isValid,
+    phoneNumber,
+  } = usePhoneInput();
+  const { onChange } = props;
+
+  useEffect(() => {
+    onChange(phoneNumber);
+  }, [phoneNumber]);
+
+  return (
+    <PhoneInput>
+      <PhoneInput.NumberInput
+        onChange={(e) => {
+          handlePhoneNumberChange(e.target.value);
+        }}
+        placeholder="Phone"
+        value={phoneNumber}
+      />
+    </PhoneInput>
+  );
+}
+
+export function ReactHookFormAndZod() {
+  const {
+    control,
+    formState: { errors },
+    handleSubmit,
+    register,
+  } = useForm<z.infer<typeof schema>>({
+    resolver: zodResolver(schema),
+  });
+  const [submitState, setSubmitState] = useState<z.infer<typeof schema>>({
+    name: '',
+    phone: '',
+  });
+
   return (
     <form
       className={styles.form}
-      onSubmit={(e) => {
-        e.preventDefault();
-      }}
+      onSubmit={handleSubmit((data) => {
+        setSubmitState(data);
+      })}
     >
-      <input placeholder="Name" type="text" />
-      <PhoneInput>
-        <PhoneInput.CountrySelect>
-          <PhoneInput.Trigger className={styles.countrySelect}>
-            Country
-          </PhoneInput.Trigger>
-          <PhoneInput.Dialog className={styles.countrySelectDialog}>
-            <input />
-            <ul>
-              <li value="1">US</li>
-              <li value="44">UK</li>
-            </ul>
-          </PhoneInput.Dialog>
-        </PhoneInput.CountrySelect>
-        <PhoneInput.NumberInput />
-      </PhoneInput>
+      <input placeholder="Name" type="text" {...register('name')} />
+      {errors.name && <span>{errors.name.message}</span>}
+      <Controller
+        control={control}
+        name="phone"
+        render={({ field }) => <FormPhoneInput onChange={field.onChange} />}
+      />
+      {errors.phone && <span>{errors.phone.message}</span>}
+      <button type="submit">Submit</button>
+
+      <div>
+        <h2>Submit state</h2>
+        <pre>{JSON.stringify(submitState, null, 2)}</pre>
+      </div>
     </form>
   );
 }
@@ -240,7 +290,7 @@ export function Styled() {
   );
 }
 
-export function StyledTwo() {
+export function StyledWithAnimation() {
   const {
     country,
     countryList,
@@ -352,7 +402,6 @@ export function StyledTwo() {
               )}
             </PhoneInput.Dialog>
           </PhoneInput.CountrySelect>
-
           <PhoneInput.NumberInput
             className={styles.numberInput}
             id="phone"
