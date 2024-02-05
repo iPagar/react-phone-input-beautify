@@ -158,7 +158,6 @@ export function Styled() {
         <PhoneInput.CountrySelect>
           <PhoneInput.Trigger className={styles.countrySelect}>
             <CountryFlag className={styles.countryFlag} country={country} />
-
             <div className={styles.countryIcon}>
               <svg
                 fill="none"
