@@ -355,10 +355,18 @@
         background: #fcfcfc;
         box-shadow: 0px 2px 16px 0px rgba(18, 18, 18, 0.1);
         overflow: hidden;
+        transform: scale(0.9); /* Начальный масштаб */
+        opacity: 0; /* Начальная прозрачность */
+        transition:
+          transform 0.3s ease,
+          opacity 0.3s ease; /* Переход для масштаба и прозрачности */
+        pointer-events: none;
+      }
 
-        &[aria-hidden='true'] {
-          display: none;
-        }
+      &Dialog[aria-hidden='false'] {
+        transform: scale(1); /* Конечный масштаб */
+        opacity: 1; /* Конечная прозрачность */
+        pointer-events: all;
       }
 
       &List {
