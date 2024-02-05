@@ -9,14 +9,20 @@ export const PhoneInputNumberInput = forwardRef(
     props: React.InputHTMLAttributes<HTMLInputElement>,
     ref: React.Ref<HTMLInputElement>
   ) => {
-    usePhoneInput();
+    const { props: phoneProps, state } = usePhoneInput();
     const { className } = props;
 
     return (
       <input
         ref={ref}
         {...props}
-        className={clsx(styles.phoneInputNumberInput, className)}
+        {...phoneProps.numberInputProps}
+        className={clsx(phoneProps.numberInputProps.className, className)}
+        onChange={(e) => {
+          const formattedNumber = state.handlePhoneNumberChange(e.target.value);
+          e.target.value = formattedNumber;
+          props.onChange?.(e);
+        }}
       />
     );
   }

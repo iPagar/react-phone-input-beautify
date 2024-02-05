@@ -2,16 +2,18 @@ import clsx from 'clsx';
 import React from 'react';
 
 import styles from './phone-input.module.scss';
-import { usePhoneInputCountrySelect } from './phone-input-country-select-context';
+import { usePhoneInput } from './phone-input-provider';
 
 export function PhoneInputTrigger(
   props: React.ButtonHTMLAttributes<HTMLButtonElement>
 ) {
+  const { onClick } = props;
   const { isDialogOpen, setIsDialogOpen, setTriggerRef, triggerRef } =
-    usePhoneInputCountrySelect();
+    usePhoneInput();
 
-  const handleTogglePopover = () => {
+  const handleTogglePopover = (e: React.MouseEvent<HTMLButtonElement>) => {
     setIsDialogOpen(!isDialogOpen);
+    onClick?.(e);
   };
 
   const { children, className } = props;

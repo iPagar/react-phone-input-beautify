@@ -40,10 +40,10 @@ export function formatPhoneNumber(phoneNumber: string) {
  * @param initialCountry - format is ISO 3166-1 alpha-2
  * @param initialPhoneNumber - any string
  */
-export const usePhoneState = (
+export const usePhoneState = ({
   initialCountry = 'US',
-  initialPhoneNumber = ''
-) => {
+  initialPhoneNumber = '',
+} = {}) => {
   const [country, setCountry] = useState(initialCountry);
   const [phoneNumber, setPhoneNumber] = useState(
     formatPhoneNumber(initialPhoneNumber)
@@ -75,13 +75,13 @@ export const usePhoneState = (
    *
    * @param newPhoneNumber - any string
    */
-  const handlePhoneNumberChange = (newPhoneNumber: string) => {
+  const handlePhoneNumberChange = (newPhoneNumber: string): string => {
     let phone = newPhoneNumber;
 
     if (phone.trim() === '') {
       setPhoneNumber('');
       setIsValid(false);
-      return;
+      return '';
     }
 
     // If the phone number doesn't start with a "+", add it
@@ -107,6 +107,8 @@ export const usePhoneState = (
     } else {
       setIsValid(false);
     }
+
+    return formattedNumber;
   };
 
   return {

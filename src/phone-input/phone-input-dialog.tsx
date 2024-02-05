@@ -1,46 +1,56 @@
 import clsx from 'clsx';
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import { useClickOutside } from './handle-click-outside';
 import styles from './phone-input.module.scss';
-import { usePhoneInputCountrySelect } from './phone-input-country-select-context';
 import { usePhoneInput } from './phone-input-provider';
 
 export function PhoneInputDialog(
   props: Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> & {
-    children?:
-      | (({ open }: { open: boolean }) => React.ReactNode)
-      | React.ReactNode;
+    children?: React.ReactNode;
+    onClose?: () => void;
+    onOpenChange?: (open: boolean) => void;
+    open?: boolean;
   }
 ) {
+  const { children, className, onClose, onOpenChange, open } = props;
+  const {
+    dialogPosition,
+    isDialogOpen,
+    props: { phoneInputDialogProps },
+    setIsDialogOpen,
+    triggerRef,
+  } = usePhoneInput();
+  const dialogOpen = typeof open === 'boolean' ? open : isDialogOpen;
   const dialogRef = useRef<HTMLDivElement>(null);
-  const { dialogPosition } = usePhoneInput();
-  const { isDialogOpen, setIsDialogOpen, triggerRef } =
-    usePhoneInputCountrySelect();
+
   useClickOutside([dialogRef, triggerRef], () => {
-    if (isDialogOpen) {
+    if (dialogOpen) {
       setIsDialogOpen(false);
     }
   });
-  const { children, className } = props;
+
+  useEffect(() => {
+    if (onOpenChange) {
+      onOpenChange(dialogOpen);
+    }
+  }, [dialogOpen]);
 
   if (!dialogPosition) return null;
 
   return (
     <div
       {...props}
-      aria-hidden={!isDialogOpen}
+      {...phoneInputDialogProps}
       className={clsx(
         styles.countrySelectDialog,
         className,
-        isDialogOpen && styles.countrySelectDialogOpen
+        dialogOpen && styles.countrySelectDialogOpen
       )}
       ref={dialogRef}
       style={{ top: dialogPosition.top }}
     >
-      {typeof children === 'function'
-        ? children({ open: isDialogOpen })
-        : children}
+      {children}
     </div>
   );
 }

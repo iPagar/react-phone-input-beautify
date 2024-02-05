@@ -466,22 +466,30 @@
   }
 }
 
-.phoneInput {
-  display: flex;
-  gap: 8px;
-}
+.formPhoneInput {
+  .phoneInput {
+    display: flex;
+    gap: 8px;
+  }
 
-.countrySelect {
-  background: none;
-  appearance: none;
-  width: 32px;
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  cursor: pointer;
+  .countrySelect {
+    background: none;
+    appearance: none;
+    width: 32px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    cursor: pointer;
 
-  & .countryFlag {
+    & .countryFlag {
+      width: 32px;
+      height: 24px;
+    }
+  }
+
+  .countryFlag {
     width: 32px;
     height: 24px;
+    cursor: pointer;
   }
 }

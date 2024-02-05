@@ -2,13 +2,23 @@ import clsx from 'clsx';
 import React, { useCallback } from 'react';
 
 import styles from './phone-input.module.scss';
-import { usePhoneInputCountrySelect } from './phone-input-country-select-context';
+import { usePhoneInput } from './phone-input-provider';
 
-export function PhoneInputItem(props: React.LiHTMLAttributes<HTMLLIElement>) {
-  const { children, className, onClick, onKeyDown, value } = props;
-  const { setIsDialogOpen } = usePhoneInputCountrySelect();
+export function PhoneInputItem(
+  props: React.LiHTMLAttributes<HTMLLIElement> & {
+    country: string;
+  }
+) {
+  const { children, className, country, onClick, onKeyDown } = props;
+  const {
+    props: { getListItemProps },
+    setIsDialogOpen,
+    state,
+  } = usePhoneInput();
 
   const handleSelect = (e: React.MouseEvent<HTMLLIElement>) => {
+    state.handleCountryChange(country);
+
     onClick?.(e);
 
     setIsDialogOpen(false);
@@ -16,21 +26,25 @@ export function PhoneInputItem(props: React.LiHTMLAttributes<HTMLLIElement>) {
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLLIElement>) => {
     if (event.key === 'Enter') {
+      state.handleCountryChange(country);
+
       onKeyDown?.(event);
 
       setIsDialogOpen(false);
     }
   };
 
+  const itemProps = getListItemProps({
+    value: country,
+  });
+
   return (
     <li
       {...props}
-      aria-selected={false}
+      {...itemProps}
       className={clsx(styles.countrySelectItem, className)}
       onClick={handleSelect}
       onKeyDown={handleKeyDown}
-      role="option"
-      value={value}
     >
       {children}
     </li>
