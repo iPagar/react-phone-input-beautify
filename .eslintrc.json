@@ -39,7 +39,8 @@
     "function-paren-newline": "off",
     "jsx-a11y/no-autofocus": "off",
     "react/button-has-type": "off",
-    "jsx-a11y/no-noninteractive-element-interactions": "off"
+    "jsx-a11y/no-noninteractive-element-interactions": "off",
+    "no-shadow": "off"
   },
   "settings": {
     "import/resolver": {

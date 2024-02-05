@@ -13,9 +13,6 @@ import {
 import styles from './phone-input-stories.module.scss';
 
 export default {
-  argTypes: {
-    backgroundColor: { control: 'color' },
-  },
   component: PhoneInput,
   parameters: {
     layout: 'centered',
@@ -399,7 +396,6 @@ export function Hook() {
           {state.countryList.map((countryItem) => (
             <li
               key={countryItem.alpha2}
-              value={countryItem.alpha2}
               {...getListItemProps({ value: countryItem.alpha2 })}
               onClick={() => {
                 state.handleCountryChange(countryItem.alpha2);
@@ -429,6 +425,41 @@ export function Hook() {
       <span>{state.isValid ? 'Valid' : 'Invalid'}</span>
       <span>{`${state.country}: ${state.phoneNumber}`}</span>
     </form>
+  );
+}
+
+export function BasicWithCountryFlag() {
+  return (
+    <PhoneInput.Root>
+      {({ country }) => (
+        <PhoneInput.Trigger>
+          <CountryFlag country={country} />
+        </PhoneInput.Trigger>
+      )}
+      {({ countryList }) => (
+        <PhoneInput.Dialog>
+          <ul>
+            {countryList.map((countryItem) => (
+              <PhoneInput.Item
+                country={countryItem.alpha2}
+                key={countryItem.alpha2}
+              >
+                {countryItem.name}
+              </PhoneInput.Item>
+            ))}
+          </ul>
+        </PhoneInput.Dialog>
+      )}
+      <PhoneInput.NumberInput placeholder="Phone" />
+    </PhoneInput.Root>
+  );
+}
+
+export function Basic() {
+  return (
+    <PhoneInput.Root>
+      <PhoneInput.NumberInput placeholder="Phone" />
+    </PhoneInput.Root>
   );
 }
 

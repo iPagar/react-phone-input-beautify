@@ -10,14 +10,14 @@ import { useState } from 'react';
 import z from 'zod';
 
 export const phoneValidationSchema = (
-  { emptyStringMessage, invalidMessage } = {
-    emptyStringMessage: 'Phone number is required',
-    invalidMessage: 'Invalid phone number',
+  { invalid, required } = {
+    invalid: 'Invalid phone number',
+    required: 'Phone number is required',
   }
 ) =>
   z
     .string({
-      required_error: emptyStringMessage,
+      required_error: required,
     })
     .refine((value) => {
       try {
@@ -25,7 +25,7 @@ export const phoneValidationSchema = (
       } catch (error) {
         return false;
       }
-    }, invalidMessage);
+    }, invalid);
 
 export function formatPhoneNumber(phoneNumber: string) {
   const parsedNumber = parsePhoneNumberFromString(phoneNumber);

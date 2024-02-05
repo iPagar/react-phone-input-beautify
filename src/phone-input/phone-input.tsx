@@ -38,6 +38,14 @@ export function usePhone(
 
 type UsePhoneStateParams = Parameters<typeof usePhoneState>[0];
 
+type ChildrenFunc = (props: {
+  country: string;
+  countryList: ISO31661AssignedEntry[];
+  onPhoneChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  open: boolean;
+  phone: string;
+}) => React.ReactNode;
+
 export function PhoneInputRoot(
   props: Omit<HTMLAttributes<HTMLDivElement>, 'children'> & {
     onCountryChange?: (country: string) => void;
@@ -45,17 +53,8 @@ export function PhoneInputRoot(
     onValidationChange?: (valid: boolean) => void;
   } & UsePhoneStateParams & {
       children?:
-        | (({
-            countryList,
-            onPhoneChange,
-            open,
-            phone,
-          }: {
-            countryList: ISO31661AssignedEntry[];
-            onPhoneChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-            open: boolean;
-            phone: string;
-          }) => React.ReactNode)
+        | (ChildrenFunc | React.ReactNode)[]
+        | ChildrenFunc
         | React.ReactNode;
     }
 ) {
@@ -100,24 +99,32 @@ export function PhoneInputRoot(
     }
   }, [onPhoneChange, state.phoneNumber]);
 
+  // Функция для обработки children
+  const processChildren = (child: ChildrenFunc | React.ReactNode) => {
+    if (typeof child === 'function') {
+      return child({
+        country: state.country,
+        countryList: state.countryList,
+        onPhoneChange: (e) => state.handlePhoneNumberChange(e.target.value),
+        open: isOpen,
+        phone: state.phoneNumber,
+      });
+    }
+    return child;
+  };
+
+  // Обработка children, если это массив или одиночный элемент/функция
+  const renderedChildren = Array.isArray(children)
+    ? children.map((child) => processChildren(child))
+    : processChildren(children);
+
   return (
     <PhoneInputContextProvider
       dialog={dialogState}
       props={phoneProps}
       state={state}
     >
-      <PhoneInputWrapper {...props}>
-        {typeof children === 'function'
-          ? children({
-              countryList: state.countryList,
-              onPhoneChange: (e) => {
-                state.handlePhoneNumberChange(e.target.value);
-              },
-              open: isOpen,
-              phone: state.phoneNumber,
-            })
-          : children}
-      </PhoneInputWrapper>
+      <PhoneInputWrapper {...props}>{renderedChildren}</PhoneInputWrapper>
     </PhoneInputContextProvider>
   );
 }
