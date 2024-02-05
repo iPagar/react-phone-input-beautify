@@ -3,7 +3,7 @@ import React, { useCallback, useState } from 'react';
 
 import { CountryFlag } from '../src/country-flag/country-flag';
 import { PhoneInput } from '../src/phone-input/phone-input';
-import { usePhoneInput } from '../src/use-phone-input';
+import { usePhoneInput } from '../src/use-phone-input/use-phone-input';
 import styles from './phone-input-stories.module.scss';
 
 export default {
@@ -47,9 +47,7 @@ export function Input() {
         <PhoneInput className={styles.phoneInput}>
           <PhoneInput.CountrySelect>
             <PhoneInput.Trigger className={styles.countrySelect}>
-              <CountryFlag country={country}>
-                <CountryFlag.Img className={styles.countryFlag} />
-              </CountryFlag>
+              <CountryFlag className={styles.countryFlag} country={country} />
               {country}
             </PhoneInput.Trigger>
             <PhoneInput.Dialog className={styles.countrySelectDialog}>
@@ -159,9 +157,8 @@ export function Styled() {
       >
         <PhoneInput.CountrySelect>
           <PhoneInput.Trigger className={styles.countrySelect}>
-            <CountryFlag country={country}>
-              <CountryFlag.Img className={styles.countryFlag} />
-            </CountryFlag>
+            <CountryFlag className={styles.countryFlag} country={country} />
+
             <div className={styles.countryIcon}>
               <svg
                 fill="none"
@@ -213,11 +210,12 @@ export function Styled() {
                   role="option"
                   tabIndex={0}
                 >
-                  <img
-                    alt=""
+                  <CountryFlag
                     className={styles.countrySelectItemFlag}
-                    src={`https://flagsapi.com/${countryItem.alpha2}/flat/64.png`}
+                    country={countryItem.alpha2}
+                    type="svg"
                   />
+
                   <span>{countryItem.name}</span>
                 </PhoneInput.Item>
               ))}
@@ -293,30 +291,27 @@ export function Flags() {
 
   return (
     <div className={styles.flags}>
-      <select
-        onChange={(e) => handleCountryChange(e.target.value)}
-        value={country}
-      >
-        {countryList.map((countryItem) => (
-          <option key={countryItem.alpha2} value={countryItem.alpha2}>
-            {countryItem.name}
-          </option>
-        ))}
-      </select>
-      <div className={styles.flagGroup}>
-        <div className={styles.flag}>
-          <span>IMG</span>
-          <CountryFlag country={country}>
-            <CountryFlag.Img className={styles.countryFlag} />
-          </CountryFlag>
+      {countryList.map((countryItem) => (
+        <div>
+          <span>{`${countryItem.name} (${countryItem.alpha2})`}</span>
+          <div className={styles.flagGroup}>
+            <div className={styles.flag}>
+              <span>IMG</span>
+              <CountryFlag
+                className={styles.countryFlag}
+                country={countryItem.alpha2}
+              />
+            </div>
+            <div className={styles.flag}>
+              <span>SVG</span>
+              <CountryFlag
+                className={styles.countryFlag}
+                country={countryItem.alpha2}
+              />
+            </div>
+          </div>
         </div>
-        <div className={styles.flag}>
-          <span>SVG</span>
-          <CountryFlag country={country}>
-            <CountryFlag.Svg className={styles.countryFlag} />
-          </CountryFlag>
-        </div>
-      </div>
+      ))}
     </div>
   );
 }

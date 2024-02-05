@@ -20,7 +20,6 @@
   "dependencies": {
     "@vitejs/plugin-react": "^4.2.1",
     "clsx": "^2.1.0",
-    "country-flag-icons": "^1.5.9",
     "eslint-plugin-unused-imports": "^3.0.0",
     "iso-3166": "^4.3.0",
     "libphonenumber-js": "^1.10.54",

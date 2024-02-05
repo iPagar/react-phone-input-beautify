@@ -1,21 +1,26 @@
-import React, { ReactNode } from 'react';
+import React, { HTMLProps } from 'react';
 
-import { CountryFlagImg } from './country-flag-img';
-import { CountryFlagProvider } from './country-flag-provider';
-import { CountryFlagSVG } from './country-flag-svg';
-
-export function CountryFlag(props: {
-  children?: ReactNode;
-  /**
-   * Country code in ISO 3166-1 alpha-2 format
-   */
-  country: string;
-}) {
-  const { children, country } = props;
+export function CountryFlag(
+  props: HTMLProps<HTMLImageElement> & {
+    /**
+     * Country code in ISO 3166-1 alpha-2 format
+     */
+    country: string;
+    height?: 20 | 40 | 80 | 160 | 320;
+    type?: 'jpg' | 'png' | 'svg' | 'webp';
+  }
+) {
+  const { country, height = 40, type = 'png' } = props;
 
   return (
-    <CountryFlagProvider country={country}>{children}</CountryFlagProvider>
+    <img
+      {...props}
+      alt={country}
+      src={
+        type === 'svg'
+          ? `https://flagcdn.com/${country.toLowerCase()}.${type}`
+          : `https://flagcdn.com/h${height}/${country.toLowerCase()}.${type}`
+      }
+    />
   );
 }
-CountryFlag.Img = CountryFlagImg;
-CountryFlag.Svg = CountryFlagSVG;
