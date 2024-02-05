@@ -1,7 +1,13 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import clsx from 'clsx';
-import React, { useCallback, useEffect, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import React, {
+  HTMLProps,
+  forwardRef,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
+import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 import { CountryFlag } from '../src/country-flag/country-flag';
@@ -104,37 +110,41 @@ const schema = z.object({
   phone: phoneValidationSchema(),
 });
 
-function FormPhoneInput(props: { onChange: (value: string) => void }) {
-  const {
-    country,
-    countryList,
-    handleCountryChange,
-    handlePhoneNumberChange,
-    isValid,
-    phoneNumber,
-  } = usePhoneInput();
-  const { onChange } = props;
+const FormPhoneInput = forwardRef(
+  (
+    props: {
+      name: string;
+      onChange: (changeProps: {
+        target: { name: string; value: string };
+      }) => void;
+    } & HTMLProps<HTMLInputElement>,
+    ref: React.Ref<HTMLInputElement>
+  ) => {
+    const { handlePhoneNumberChange, phoneNumber } = usePhoneInput();
+    const { onChange } = props;
 
-  useEffect(() => {
-    onChange(phoneNumber);
-  }, [phoneNumber]);
+    useEffect(() => {
+      onChange({ target: { name: props.name, value: phoneNumber } });
+    }, [phoneNumber]);
 
-  return (
-    <PhoneInput>
-      <PhoneInput.NumberInput
-        onChange={(e) => {
-          handlePhoneNumberChange(e.target.value);
-        }}
-        placeholder="Phone"
-        value={phoneNumber}
-      />
-    </PhoneInput>
-  );
-}
+    return (
+      <PhoneInput>
+        <PhoneInput.NumberInput
+          {...props}
+          onChange={(e) => {
+            handlePhoneNumberChange(e.target.value);
+          }}
+          placeholder="Phone"
+          ref={ref}
+          value={phoneNumber}
+        />
+      </PhoneInput>
+    );
+  }
+);
 
 export function ReactHookFormAndZod() {
   const {
-    control,
     formState: { errors },
     handleSubmit,
     register,
@@ -155,11 +165,7 @@ export function ReactHookFormAndZod() {
     >
       <input placeholder="Name" type="text" {...register('name')} />
       {errors.name && <span>{errors.name.message}</span>}
-      <Controller
-        control={control}
-        name="phone"
-        render={({ field }) => <FormPhoneInput onChange={field.onChange} />}
-      />
+      <FormPhoneInput {...register('phone')} />
       {errors.phone && <span>{errors.phone.message}</span>}
       <button type="submit">Submit</button>
 
