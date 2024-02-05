@@ -132,16 +132,17 @@ export function Styled() {
     isValid,
     phoneNumber,
   } = usePhoneInput();
+  const [search, setSearch] = useState('');
 
   const pickCountry = useCallback(
     (e: React.KeyboardEvent | React.MouseEvent) => {
+      setSearch('');
       const target = e.currentTarget as HTMLLIElement;
       handleCountryChange(target.dataset.value as unknown as string);
     },
     []
   );
 
-  const [search, setSearch] = useState('');
   const searchCountryList = countryList.filter((countryItem) =>
     countryItem.name.toLowerCase().includes(search.toLowerCase())
   );
