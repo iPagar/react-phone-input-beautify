@@ -36,7 +36,8 @@
     "object-curly-spacing": "off",
     "jsx-a11y/label-has-associated-control": "off",
     "implicit-arrow-linebreak": "off",
-    "function-paren-newline": "off"
+    "function-paren-newline": "off",
+    "jsx-a11y/no-autofocus": "off"
   },
   "settings": {
     "import/resolver": {
