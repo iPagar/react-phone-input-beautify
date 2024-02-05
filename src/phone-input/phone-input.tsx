@@ -8,6 +8,7 @@ import {
   PhoneInputNumberInput,
   usePhoneInputNumberInput,
 } from './phone-input-number-input';
+import PhoneInputPortal from './phone-input-portal';
 import { PhoneInputContextProvider } from './phone-input-provider';
 import { PhoneInputTrigger, usePhoneInputTrigger } from './phone-input-trigger';
 import { PhoneInputWrapper } from './phone-input-wrapper';
@@ -40,6 +41,7 @@ type UsePhoneStateParams = Parameters<typeof usePhoneState>[0];
 export function PhoneInputRoot(
   props: Omit<HTMLAttributes<HTMLDivElement>, 'children'> & {
     onCountryChange?: (country: string) => void;
+    onPhoneChange?: (phone: string) => void;
     onValidationChange?: (valid: boolean) => void;
   } & UsePhoneStateParams & {
       children?:
@@ -57,7 +59,8 @@ export function PhoneInputRoot(
         | React.ReactNode;
     }
 ) {
-  const { children, onCountryChange, onValidationChange } = props;
+  const { children, onCountryChange, onPhoneChange, onValidationChange } =
+    props;
   const state = usePhoneState();
   const [isOpen, setIsOpen] = React.useState(false);
   const phoneProps = usePhone({ isDialogOpen: isOpen }, state);
@@ -91,6 +94,12 @@ export function PhoneInputRoot(
     }
   }, [onValidationChange, state.isValid]);
 
+  useEffect(() => {
+    if (onPhoneChange) {
+      onPhoneChange(state.phoneNumber);
+    }
+  }, [onPhoneChange, state.phoneNumber]);
+
   return (
     <PhoneInputContextProvider
       dialog={dialogState}
@@ -117,6 +126,7 @@ const PhoneInput = {
   Dialog: PhoneInputDialog,
   Item: PhoneInputItem,
   NumberInput: PhoneInputNumberInput,
+  Portal: PhoneInputPortal,
   Root: PhoneInputRoot,
   Trigger: PhoneInputTrigger,
 };

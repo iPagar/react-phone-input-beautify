@@ -21,7 +21,7 @@ export function PhoneInputTrigger(
   return (
     <button
       {...props}
-      className={clsx(styles.countrySelectTrigger, className)}
+      className={clsx(styles.phoneInputTrigger, className)}
       data-open={isDialogOpen}
       onClick={handleTogglePopover}
       ref={(ref) => {

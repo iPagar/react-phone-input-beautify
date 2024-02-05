@@ -14,11 +14,13 @@ export function usePhoneInput() {
   return context as {
     dialogPosition?: { top: number };
     isDialogOpen: boolean;
+    isPortal: boolean;
     onOpenChange?: (open: boolean) => void;
     phoneInputRef?: React.RefObject<HTMLDivElement>;
     props: ReturnType<typeof usePhone>;
     setDialogPosition: React.Dispatch<React.SetStateAction<{ top: number }>>;
     setIsDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    setIsPortal: React.Dispatch<React.SetStateAction<boolean>>;
     setOnOpenChange?: React.Dispatch<Function>;
     setPhoneInputRef: React.Dispatch<
       React.SetStateAction<React.RefObject<HTMLDivElement>>
@@ -55,16 +57,19 @@ export function PhoneInputContextProvider({
     useState<React.RefObject<HTMLButtonElement> | null>(null);
   const { isDialogOpen, onOpenChange, setIsDialogOpen, setOnOpenChange } =
     dialog;
+  const [isPortal, setIsPortal] = useState(false);
 
   const contextValue = useMemo(
     () => ({
       dialogPosition,
       isDialogOpen,
+      isPortal,
       onOpenChange,
       phoneInputRef,
       props,
       setDialogPosition,
       setIsDialogOpen,
+      setIsPortal,
       setOnOpenChange,
       setPhoneInputRef,
       setTriggerRef,
@@ -79,6 +84,7 @@ export function PhoneInputContextProvider({
       triggerRef,
       isDialogOpen,
       onOpenChange,
+      isPortal,
     ]
   );
 

@@ -48,7 +48,7 @@ const FormPhoneInput = forwardRef(
           setCountry(newCountry);
         }}
       >
-        {({ countryList, onPhoneChange, phone }) => (
+        {({ countryList }) => (
           <>
             <PhoneInput.Trigger>
               <CountryFlag
@@ -57,7 +57,9 @@ const FormPhoneInput = forwardRef(
                 type="svg"
               />
             </PhoneInput.Trigger>
+
             <PhoneInput.Dialog
+              className={styles.countrySelectDialog}
               onOpenChange={() => {
                 setSearch('');
               }}
@@ -83,9 +85,7 @@ const FormPhoneInput = forwardRef(
             </PhoneInput.Dialog>
             <PhoneInput.NumberInput
               {...props}
-              onChange={(e) => {
-                onChange(e);
-              }}
+              onChange={onChange}
               placeholder="Phone"
               ref={ref}
             />

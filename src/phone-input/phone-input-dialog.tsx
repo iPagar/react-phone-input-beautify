@@ -8,15 +8,15 @@ import { usePhoneInput } from './phone-input-provider';
 export function PhoneInputDialog(
   props: Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> & {
     children?: React.ReactNode;
-    onClose?: () => void;
     onOpenChange?: (open: boolean) => void;
     open?: boolean;
   }
 ) {
-  const { children, className, onClose, onOpenChange, open } = props;
+  const { children, className, onOpenChange, open } = props;
   const {
     dialogPosition,
     isDialogOpen,
+    isPortal,
     props: { phoneInputDialogProps },
     setIsDialogOpen,
     triggerRef,
@@ -43,12 +43,13 @@ export function PhoneInputDialog(
       {...props}
       {...phoneInputDialogProps}
       className={clsx(
-        styles.countrySelectDialog,
+        styles.phoneInputDialog,
         className,
-        dialogOpen && styles.countrySelectDialogOpen
+        dialogOpen && styles.phoneInputDialogOpen,
+        isPortal && styles.phoneInputDialogPortal
       )}
       ref={dialogRef}
-      style={{ top: dialogPosition.top }}
+      style={!isPortal ? { top: dialogPosition.top } : {}}
     >
       {children}
     </div>

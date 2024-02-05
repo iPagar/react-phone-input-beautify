@@ -10,23 +10,32 @@
     }
   }
 
-  .countrySelect {
-    &Trigger {
-      background: none;
-      border: none;
+  &Trigger {
+    background: none;
+    border: none;
+  }
+
+  &Dialog {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: auto;
+    max-height: 200px;
+
+    &Open {
+      display: block;
     }
 
-    &Dialog {
-      display: none;
-      position: absolute;
-      top: 0;
-      left: 0;
-      overflow: auto;
-      max-height: 200px;
-
-      &Open {
-        display: block;
-      }
+    &Portal {
+      position: static;
     }
   }
+}
+
+.portal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1000;
 }
