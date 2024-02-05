@@ -240,6 +240,127 @@ export function Styled() {
   );
 }
 
+export function StyledTwo() {
+  const {
+    country,
+    countryList,
+    handleCountryChange,
+    handlePhoneNumberChange,
+    isValid,
+    phoneNumber,
+  } = usePhoneInput();
+  const [search, setSearch] = useState('');
+
+  const pickCountry = useCallback(
+    (e: React.KeyboardEvent | React.MouseEvent) => {
+      setSearch('');
+      const target = e.currentTarget as HTMLLIElement;
+      handleCountryChange(target.dataset.value as unknown as string);
+    },
+    []
+  );
+
+  const searchCountryList = countryList.filter((countryItem) =>
+    countryItem.name.toLowerCase().includes(search.toLowerCase())
+  );
+
+  return (
+    <form
+      className={styles.styledTwoForm}
+      onSubmit={(e) => {
+        e.preventDefault();
+      }}
+    >
+      <label className={styles.label} htmlFor="phone">
+        <span className={styles.labelText}>Phone</span>
+        <PhoneInput
+          className={clsx(styles.phoneInput, !isValid && styles.invalid)}
+        >
+          <PhoneInput.CountrySelect>
+            <PhoneInput.Trigger className={styles.countrySelect}>
+              <CountryFlag className={styles.countryFlag} country={country} />
+              <div className={styles.countryIcon}>
+                <svg
+                  fill="none"
+                  height="20"
+                  viewBox="0 0 20 20"
+                  width="20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M6.175 6.9126L10 10.7293L13.825 6.9126L15 8.0876L10 13.0876L5 8.0876L6.175 6.9126Z"
+                    fill="#7A7A7A"
+                  />
+                </svg>
+              </div>
+            </PhoneInput.Trigger>
+            <PhoneInput.Dialog className={styles.countrySelectDialog}>
+              <div className={styles.countrySelectSearch}>
+                <div className={styles.countrySelectSearchWrapper}>
+                  <div className={styles.countrySelectSearchIcon}>
+                    <svg
+                      fill="none"
+                      height="22"
+                      viewBox="0 0 22 22"
+                      width="22"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M19.25 19.25L13.75 13.75M15.5833 9.16667C15.5833 12.7105 12.7105 15.5833 9.16667 15.5833C5.62284 15.5833 2.75 12.7105 2.75 9.16667C2.75 5.62284 5.62284 2.75 9.16667 2.75C12.7105 2.75 15.5833 5.62284 15.5833 9.16667Z"
+                        stroke="#1F1E58"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeOpacity="0.8"
+                        strokeWidth="1.5"
+                      />
+                    </svg>
+                  </div>
+                  <input
+                    className={styles.countrySelectSearchInput}
+                    onChange={(e) => setSearch(e.target.value)}
+                    placeholder="Search"
+                    type="text"
+                    value={search}
+                  />
+                </div>
+              </div>
+              <ul className={styles.countrySelectList}>
+                {searchCountryList.map((countryItem) => (
+                  <PhoneInput.Item
+                    className={styles.countrySelectItem}
+                    data-value={countryItem.alpha2}
+                    key={countryItem.alpha2}
+                    onClick={pickCountry}
+                    onKeyDown={pickCountry}
+                    tabIndex={0}
+                  >
+                    <CountryFlag
+                      className={styles.countrySelectItemFlag}
+                      country={countryItem.alpha2}
+                      type="svg"
+                    />
+                    <span>{countryItem.name}</span>
+                  </PhoneInput.Item>
+                ))}
+              </ul>
+            </PhoneInput.Dialog>
+          </PhoneInput.CountrySelect>
+
+          <PhoneInput.NumberInput
+            className={styles.numberInput}
+            id="phone"
+            onChange={(e) => {
+              handlePhoneNumberChange(e.target.value);
+            }}
+            type="tel"
+            value={phoneNumber}
+          />
+        </PhoneInput>
+      </label>
+    </form>
+  );
+}
+
 export function Hook() {
   const {
     country,

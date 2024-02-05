@@ -23,6 +23,7 @@ export function PhoneInputDialog(props: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
       {...props}
+      aria-hidden={!isDialogOpen}
       className={clsx(
         styles.countrySelectDialog,
         className,
