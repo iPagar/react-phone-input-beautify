@@ -102,44 +102,41 @@ const FormPhoneInput = forwardRef(
           setCountry(newCountry);
         }}
       >
+        <PhoneInput.Trigger>
+          <CountryFlag
+            className={styles.countryFlag}
+            country={country}
+            type="svg"
+          />
+        </PhoneInput.Trigger>
         {({ countryList }) => (
-          <>
-            <PhoneInput.Trigger>
-              <CountryFlag
-                className={styles.countryFlag}
-                country={country}
-                type="svg"
+          <PhoneInput.Dialog
+            className={styles.countrySelectDialog}
+            onOpenChange={() => {
+              setSearch('');
+            }}
+          >
+            <>
+              <input
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Search"
+                value={search}
               />
-            </PhoneInput.Trigger>
-
-            <PhoneInput.Dialog
-              className={styles.countrySelectDialog}
-              onOpenChange={() => {
-                setSearch('');
-              }}
-            >
-              <>
-                <input
-                  onChange={(e) => setSearch(e.target.value)}
-                  placeholder="Search"
-                  value={search}
-                />
-                <ul>
-                  {countryList
-                    .filter((item) =>
-                      item.name.toLowerCase().includes(search.toLowerCase())
-                    )
-                    .map((item) => (
-                      <PhoneInput.Item country={item.alpha2} key={item.alpha2}>
-                        {item.name}
-                      </PhoneInput.Item>
-                    ))}
-                </ul>
-              </>
-            </PhoneInput.Dialog>
-            <PhoneInput.NumberInput {...props} onChange={onChange} ref={ref} />
-          </>
+              <ul>
+                {countryList
+                  .filter((item) =>
+                    item.name.toLowerCase().includes(search.toLowerCase())
+                  )
+                  .map((item) => (
+                    <PhoneInput.Item country={item.alpha2} key={item.alpha2}>
+                      {item.name}
+                    </PhoneInput.Item>
+                  ))}
+              </ul>
+            </>
+          </PhoneInput.Dialog>
         )}
+        <PhoneInput.NumberInput {...props} onChange={onChange} ref={ref} />
       </PhoneInput.Root>
     );
   }
@@ -225,7 +222,7 @@ export function Hook() {
     <form onSubmit={e => e.preventDefault()}>
       <input
         value={state.phoneNumber}
-        onChange={state.handlePhoneNumberChange}
+        onChange={e => state.onPhoneNumberChange(e.target.value)}
       />
     </form>
   );
@@ -280,7 +277,7 @@ export function Hook() {
 
 ### Using with custom input component
 
-If you already have a custom input component, you can just pass the `usePhone` hook to it and get the props from the hook.
+If you already have a custom input component, you can use the `PhoneInput` component to manage the state and pass the state to your custom input component.
 
 ```jsx
 export function CustomInput() {
@@ -379,6 +376,7 @@ import { formatPhoneNumber } from 'react-phone-input-beatify';
 
 export function FormatPhoneNumber() {
   const phoneNumber = formatPhoneNumber('+1234567890');
+
   return <div>{phoneNumber}</div>;
 }
 ```
