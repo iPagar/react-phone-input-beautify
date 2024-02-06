@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/iPagar/react-phone-input-beatify/compare/v1.0.2...v1.0.3) (2024-02-06)
+
+
+### Bug Fixes
+
+* Remove Husky installation and disable HUSKY ([7b5bbbc](https://github.com/iPagar/react-phone-input-beatify/commit/7b5bbbccdaa061ceee7e8c18aa3cf7c911040771))
+
 ## [1.0.2](https://github.com/iPagar/react-phone-input-beatify/compare/v1.0.1...v1.0.2) (2024-02-06)
 
 
