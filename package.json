@@ -5,6 +5,10 @@
   "main": "lib/lib.mjs",
   "module": "lib/lib.mjs",
   "types": "lib/lib.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/iPagar/react-phone-input-beatify.git"
+  },
   "scripts": {
     "build": "vite build ",
     "test": "echo \"Error: no test specified\" && exit 1",
