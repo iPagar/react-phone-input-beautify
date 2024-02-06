@@ -1,3 +1,10 @@
+## [1.0.6](https://github.com/iPagar/react-phone-input-beatify/compare/v1.0.5...v1.0.6) (2024-02-06)
+
+
+### Bug Fixes
+
+* Add SSR to PhoneInputPortal component ([e895fa6](https://github.com/iPagar/react-phone-input-beatify/commit/e895fa6f2ad81d9836d4497229835be7a1ee00b9))
+
 ## [1.0.5](https://github.com/iPagar/react-phone-input-beatify/compare/v1.0.4...v1.0.5) (2024-02-06)
 
 
