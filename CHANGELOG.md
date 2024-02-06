@@ -1,3 +1,10 @@
+## [1.0.4](https://github.com/iPagar/react-phone-input-beatify/compare/v1.0.3...v1.0.4) (2024-02-06)
+
+
+### Bug Fixes
+
+* Add Husky install script and update prepare script ([3220cdd](https://github.com/iPagar/react-phone-input-beatify/commit/3220cdd9f36e8d43c0fa106fa20dc071b4339b61))
+
 ## [1.0.3](https://github.com/iPagar/react-phone-input-beatify/compare/v1.0.2...v1.0.3) (2024-02-06)
 
 
