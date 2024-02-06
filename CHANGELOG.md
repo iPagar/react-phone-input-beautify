@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/iPagar/react-phone-input-beatify/compare/v1.0.1...v1.0.2) (2024-02-06)
+
+
+### Bug Fixes
+
+* Add Husky installation step to semantic-release workflow ([a46d2ba](https://github.com/iPagar/react-phone-input-beatify/commit/a46d2ba19c0bee8add4b0ba87233c964ef2a860a))
+
 ## [1.0.1](https://github.com/iPagar/react-phone-input-beatify/compare/v1.0.0...v1.0.1) (2024-02-06)
 
 
