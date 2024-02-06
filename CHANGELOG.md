@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/iPagar/react-phone-input-beatify/compare/v1.0.0...v1.0.1) (2024-02-06)
+
+
+### Bug Fixes
+
+* Add HUSKY_SKIP_INSTALL flag to workflow ([4142f7d](https://github.com/iPagar/react-phone-input-beatify/commit/4142f7d9f3e4068e973babf4d136ec02f2bb37ff))
+
 # 1.0.0 (2024-02-06)
 
 
