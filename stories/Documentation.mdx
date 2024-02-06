@@ -1,0 +1,384 @@
+# PhoneInput Component
+
+The `PhoneInput` component is a versatile input field designed for entering and validating international phone numbers. It includes features such as country selection, phone number formatting, and validation.
+
+## Installation
+
+To use the `PhoneInput` component in your project, you first need to install it along with its dependencies.
+
+```bash
+npm install react-phone-input-beatify
+```
+
+Or using yarn:
+
+```bash
+yarn add react-phone-input-beatify
+```
+
+## Usage
+
+Below are examples demonstrating how to use the `PhoneInput` component in various scenarios.
+
+### Basic Usage
+
+This example demonstrates a basic setup of the `PhoneInput` component, allowing users to enter a phone number. The `PhoneInput` component supports various customization options through props.
+
+```jsx
+import { PhoneInput } from 'react-phone-input-beatify'; 
+
+export default function BasicExample() {
+  const [phone, setPhone] = useState('');
+
+  return (
+    <PhoneInput.Root>
+      <PhoneInput.NumberInput 
+        placeholder="Phone" 
+        value={phone}
+        onChange={e => setPhone(e.target.value)}
+      />
+    </PhoneInput.Root>
+  );
+}
+```
+
+### Custom Country Selection
+```jsx
+import React, { useState } from 'react';
+import { PhoneInput } from 'react-phone-input-beatify'; 
+
+export function CustomCountrySelection() {
+  return (
+    <PhoneInput.Root>
+      {({ country }) => (
+        <PhoneInput.Trigger>
+          <CountryFlag className={styles.countryFlag} country={country} />
+        </PhoneInput.Trigger>
+      )}
+      {({ countryList }) => (
+        <PhoneInput.Dialog>
+          <ul>
+            {countryList.map((countryItem) => (
+              <PhoneInput.Item
+                country={countryItem.alpha2}
+                key={countryItem.alpha2}
+              >
+                {countryItem.name}
+              </PhoneInput.Item>
+            ))}
+          </ul>
+        </PhoneInput.Dialog>
+      )}
+      <PhoneInput.NumberInput />
+    </PhoneInput.Root>
+  );
+}
+```
+
+### Using with React-Hook-Form and Zod
+
+To use the `PhoneInput` component with `react-hook-form` and `zod`, you can create a custom input component that integrates with the form library.
+  
+```jsx
+import { forwardRef, HTMLProps, useState } from 'react';
+import { PhoneInput, CountryFlag } from 'react-phone-input-beatify';
+import styles from './phone-input.module.scss';
+
+type FormPhoneInputProps = {
+  name: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+} & HTMLProps<HTMLInputElement>;
+
+const FormPhoneInput = forwardRef(
+  (props: FormPhoneInputProps, ref: React.Ref<HTMLInputElement>) => {
+    const { onChange } = props;
+    const [country, setCountry] = useState('US');
+    const [search, setSearch] = useState('');
+
+    return (
+      <PhoneInput.Root
+        className={styles.formPhoneInput}
+        onCountryChange={(newCountry) => {
+          setCountry(newCountry);
+        }}
+      >
+        {({ countryList }) => (
+          <>
+            <PhoneInput.Trigger>
+              <CountryFlag
+                className={styles.countryFlag}
+                country={country}
+                type="svg"
+              />
+            </PhoneInput.Trigger>
+
+            <PhoneInput.Dialog
+              className={styles.countrySelectDialog}
+              onOpenChange={() => {
+                setSearch('');
+              }}
+            >
+              <>
+                <input
+                  onChange={(e) => setSearch(e.target.value)}
+                  placeholder="Search"
+                  value={search}
+                />
+                <ul>
+                  {countryList
+                    .filter((item) =>
+                      item.name.toLowerCase().includes(search.toLowerCase())
+                    )
+                    .map((item) => (
+                      <PhoneInput.Item country={item.alpha2} key={item.alpha2}>
+                        {item.name}
+                      </PhoneInput.Item>
+                    ))}
+                </ul>
+              </>
+            </PhoneInput.Dialog>
+            <PhoneInput.NumberInput {...props} onChange={onChange} ref={ref} />
+          </>
+        )}
+      </PhoneInput.Root>
+    );
+  }
+);
+```
+
+Then you can use the `FormPhoneInput` component in your form.
+
+```jsx
+import { phoneValidationSchema } from 'react-phone-input-beatify';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from 'react';
+import { FormPhoneInput } from './FormPhoneInput';
+import styles from './form.module.scss';
+import { z } from 'zod';
+
+const schema = z.object({
+  name: z.string().min(1, { message: 'Required' }),
+  phone: phoneValidationSchema(),
+});
+
+export function ReactHookFormAndZod() {
+  const {
+    formState: { errors },
+    handleSubmit,
+    register,
+  } = useForm<z.infer<typeof schema>>({
+    resolver: zodResolver(schema),
+  });
+  const [submitState, setSubmitState] = useState<z.infer<typeof schema>>({
+    name: '',
+    phone: '',
+  });
+
+  return (
+    <form
+      className={styles.form}
+      onSubmit={handleSubmit((data) => {
+        setSubmitState(data);
+      })}
+    >
+      <input placeholder="Name" type="text" {...register('name')} />
+      {errors.name && <span>{errors.name.message}</span>}
+      <FormPhoneInput {...register('phone')} placeholder="Phone" />
+      {errors.phone && <span>{errors.phone.message}</span>}
+      <button type="submit">Submit</button>
+
+      <div>
+        <h2>Submit state</h2>
+        <pre>{JSON.stringify(submitState, null, 2)}</pre>
+      </div>
+    </form>
+  );
+}
+```
+
+### Custom Validation Schema
+
+You can also change the `phoneValidationSchema` error messages by passing an object to the `phoneValidationSchema` function.
+
+```jsx
+import { phoneValidationSchema } from 'react-phone-input-beatify';
+
+const schema = z.object({
+  phone: phoneValidationSchema({
+    required: 'Phone is required',
+    invalid: 'Invalid phone number',
+  }),
+});
+
+```
+
+### Using with hooks
+
+You can also use the `usePhoneState` hook to manage the state and handle events such as country selection and phone number change in your custom form component.
+
+```jsx
+export function Hook() {
+  const state = usePhoneState();
+
+  return (
+    <form onSubmit={e => e.preventDefault()}>
+      <input
+        value={state.phoneNumber}
+        onChange={state.handlePhoneNumberChange}
+      />
+    </form>
+  );
+}
+```
+
+### Using WAI-ARIA
+
+The `PhoneInput` component is designed to be accessible and supports WAI-ARIA attributes. You can use the `usePhone` hook to get the `aria-` attributes and pass them to the input element.
+
+```jsx
+
+export function Hook() {
+  const state = usePhoneState();
+  const [isOpen, setIsOpen] = useState(false);
+  const {
+    getListItemProps,
+    numberInputProps,
+    phoneInputDialogProps,
+    triggerProps,
+  } = usePhone(
+    {
+      isDialogOpen: isOpen,
+    },
+    state
+  );
+
+  return (
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+      }}
+    >
+       <button {...triggerProps}>
+          {state.country}
+        </button>
+        <div {...phoneInputDialogProps}>
+          {state.countryList.map((countryItem) => (
+            <li
+              key={countryItem.alpha2}
+              {...getListItemProps({ value: countryItem.alpha2 })}
+            >
+              {countryItem.name}
+            </li>
+          ))}
+        </div>
+      <input {...numberInputProps} />
+    </form>
+  );
+}
+```
+
+### Using with custom input component
+
+If you already have a custom input component, you can just pass the `usePhone` hook to it and get the props from the hook.
+
+```jsx
+export function CustomInput() {
+  return (
+    <PhoneInput.Root>
+      {({ country }) => (
+        <PhoneInput.Trigger>
+          <CountryFlag country={country} />
+        </PhoneInput.Trigger>
+      )}
+      {({ onPhoneChange, phone }) => (
+        <BaseInput onChange={(e) => onPhoneChange(e.target.value)} value={phone} />
+      )}
+    </PhoneInput.Root>
+  );
+}
+```
+
+Or with ref forwarding:
+
+```jsx
+export const CustomInput = forwardRef(
+  (props, ref) => {
+    return (
+      <PhoneInput.Root>
+        {({ country }) => (
+          <PhoneInput.Trigger>
+            <CountryFlag country={country} />
+          </PhoneInput.Trigger>
+        )}
+        {({ onPhoneChange, phone }) => (
+          <BaseInput
+            onChange={(e) => onPhoneChange(e.target.value)}
+            value={phone}
+            ref={ref}
+          />
+        )}
+      </PhoneInput.Root>
+    );
+  }
+);
+```
+
+
+### Using portal to render the dialog
+
+You can use the `PhoneInput.Portal` component to render the dialog in a portal.
+
+```jsx
+export function Portal() {
+  return (
+    <PhoneInput.Root>
+      {({ country }) => (
+        <PhoneInput.Trigger>
+          <CountryFlag country={country} />
+        </PhoneInput.Trigger>
+      )}
+      {({ countryList }) => (
+        <PhoneInput.Portal>
+          <PhoneInput.Dialog>
+            <ul>
+              {countryList.map((countryItem) => (
+                <PhoneInput.Item
+                  country={countryItem.alpha2}
+                  key={countryItem.alpha2}
+                >
+                  {countryItem.name}
+                </PhoneInput.Item>
+              ))}
+            </ul>
+          </PhoneInput.Dialog>
+        </PhoneInput.Portal>
+      )}
+      <PhoneInput.NumberInput />
+    </PhoneInput.Root>
+  );
+}
+```
+
+### Using only the country flag component
+
+You can use the `CountryFlag` component to render the country flag.
+
+```jsx
+export function Flag() {
+  return <CountryFlag country="US" />;
+}
+```
+
+### Formatting the phone number
+
+You can use the `formatPhoneNumber` function to format the phone number.
+
+```jsx
+import { formatPhoneNumber } from 'react-phone-input-beatify';
+
+export function FormatPhoneNumber() {
+  const phoneNumber = formatPhoneNumber('+1234567890');
+  return <div>{phoneNumber}</div>;
+}
+```

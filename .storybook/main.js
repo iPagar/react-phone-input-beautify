@@ -17,5 +17,8 @@ const config = {
   docs: {
     autodocs: 'tag',
   },
+  features: {
+    previewMdx2: true,
+  },
 };
 export default config;
