@@ -25,7 +25,6 @@
     "@hookform/resolvers": "^3.3.4",
     "@vitejs/plugin-react": "^4.2.1",
     "clsx": "^2.1.0",
-    "conventional-changelog-eslint": "^5.0.0",
     "eslint-plugin-unused-imports": "^3.0.0",
     "iso-3166": "^4.3.0",
     "libphonenumber-js": "^1.10.54",
@@ -38,6 +37,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "conventional-changelog-eslint": "^5.0.0",
     "@babel/eslint-parser": "^7.23.10",
     "@babel/preset-react": "^7.23.3",
     "@semantic-release/changelog": "^6.0.3",
