@@ -197,6 +197,11 @@
             color: var(--main-black, #414141);
           }
 
+          &.focused {
+            top: -20px;
+            color: var(--main-black, #414141);
+          }
+
           &Text {
             color: var(--secondary-dark-gray, #7a7a7a);
             font-family: 'Work Sans';

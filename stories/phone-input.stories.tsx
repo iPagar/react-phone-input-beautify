@@ -207,6 +207,7 @@ export function Styled() {
   const [isValid, setIsValid] = useState(false);
   const [country, setCountry] = useState('US');
   const [phone, setPhone] = useState('');
+  const [focused, setFocused] = useState(false);
 
   return (
     <form
@@ -289,7 +290,11 @@ export function Styled() {
             </PhoneInput.Dialog>
             <div className={styles.numberInputWrapper}>
               <label
-                className={clsx(styles.label, phone && styles.filled)}
+                className={clsx(
+                  styles.label,
+                  phone && styles.filled,
+                  focused && styles.focused
+                )}
                 htmlFor="phone"
               >
                 <span className={styles.labelText}>Phone number</span>
@@ -297,8 +302,14 @@ export function Styled() {
               <PhoneInput.NumberInput
                 className={styles.numberInput}
                 id="phone"
+                onBlur={(e) => {
+                  setFocused(false);
+                }}
                 onChange={(e) => {
                   setPhone(e.target.value);
+                }}
+                onFocus={(e) => {
+                  setFocused(true);
                 }}
                 type="tel"
                 value={phone}
