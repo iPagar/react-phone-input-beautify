@@ -1,42 +1,68 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 
 import styles from './phone-input.module.scss';
 import { usePhoneInput } from './phone-input-provider';
 
-const PhoneInputPortal = ({ children }: { children?: React.ReactNode }) => {
+function PhoneInputPortal({
+  children,
+  className,
+}: {
+  children?: React.ReactNode;
+  className?: string;
+}) {
   const { phoneInputRef, setIsPortal } = usePhoneInput();
-  const el = useRef(document.createElement('div')); // Создаем элемент для портала
+  // Используем состояние для управления созданием элемента портала
+  const [portalElement, setPortalElement] = useState<HTMLDivElement | null>(
+    null
+  );
 
   useEffect(() => {
     setIsPortal(true);
+    // Создаем элемент для портала только на клиенте и после монтирования компонента
+    const el = document.createElement('div');
+    el.classList.add(styles.portal);
+    setPortalElement(el);
+
     return () => {
       setIsPortal(false);
+      // Удаляем элемент портала при размонтировании компонента
+      if (portalElement && portalElement.parentNode) {
+        portalElement.parentNode.removeChild(portalElement);
+      }
     };
-  }, [setIsPortal]);
+  }, []); // Пустой массив зависимостей, чтобы эффект выполнился один раз после монтирования
 
   useEffect(() => {
-    const { body } = document;
-    el.current.classList.add(styles.portal);
+    if (!portalElement || !phoneInputRef?.current) return () => {};
 
-    if (phoneInputRef?.current) {
-      const rect = phoneInputRef.current.getBoundingClientRect();
-      // Устанавливаем стили для позиционирования портала непосредственно под элементом ввода
-      el.current.style.position = 'absolute';
-      el.current.style.top = `${rect.bottom + window.scrollY}px`; // Учитываем прокрутку страницы по Y
-      el.current.style.left = `${rect.left + window.scrollX}px`; // Учитываем прокрутку страницы по X
-      el.current.style.width = `${rect.width}px`; // Можно установить ширину портала равной ширине элемента ввода
+    const { body } = document;
+    const rect = phoneInputRef.current.getBoundingClientRect();
+    // Устанавливаем стили для позиционирования портала
+    portalElement.style.position = 'absolute';
+    portalElement.style.top = `${rect.bottom + window.scrollY}px`;
+    portalElement.style.left = `${rect.left + window.scrollX}px`;
+    portalElement.style.width = `${rect.width}px`;
+
+    if (className) {
+      portalElement.classList.add(className);
     }
 
-    body.appendChild(el.current);
+    body.appendChild(portalElement);
 
     return () => {
-      body.removeChild(el.current);
+      if (portalElement) {
+        body.removeChild(portalElement);
+      }
     };
-  }, [phoneInputRef]); // Пересчитываем позицию при изменении phoneInputRef
+  }, [portalElement, phoneInputRef]);
 
-  // Используем ReactDOM.createPortal для рендеринга детей в созданном элементе
-  return ReactDOM.createPortal(children, el.current);
-};
+  // Если portalElement еще не создан, не рендерим портал
+  if (!portalElement) {
+    return null;
+  }
+
+  return ReactDOM.createPortal(children, portalElement);
+}
 
 export default PhoneInputPortal;

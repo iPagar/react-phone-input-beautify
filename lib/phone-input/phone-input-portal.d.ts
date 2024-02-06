@@ -1,7 +1,9 @@
 /// <reference types="react" />
-declare const PhoneInputPortal: ({
+declare function PhoneInputPortal({
   children,
+  className,
 }: {
   children?: React.ReactNode;
-}) => import('react').ReactPortal;
+  className?: string;
+}): import('react').ReactPortal | null;
 export default PhoneInputPortal;

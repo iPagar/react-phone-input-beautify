@@ -3,6 +3,7 @@ import React, { HTMLAttributes } from 'react';
 import { usePhoneState } from '../lib';
 import { PhoneInputDialog } from './phone-input-dialog';
 import { PhoneInputItem } from './phone-input-item';
+import PhoneInputPortal from './phone-input-portal';
 import { PhoneInputTrigger } from './phone-input-trigger';
 export declare function usePhone(
   props: {
@@ -11,6 +12,7 @@ export declare function usePhone(
   state: ReturnType<typeof usePhoneState>
 ): {
   getListItemProps: (itemProps: { value: string }) => {
+    'aria-controls': string;
     'aria-selected': boolean;
     role: 'option';
   };
@@ -22,7 +24,10 @@ export declare function usePhone(
     'aria-hidden': boolean;
   };
   triggerProps: {
+    readonly 'aria-expanded': boolean;
+    readonly 'aria-haspopup': 'listbox';
     readonly 'aria-label': 'Select country';
+    readonly role: 'combobox';
     readonly type: 'button';
   };
 };
@@ -53,7 +58,7 @@ declare const PhoneInput: {
     React.InputHTMLAttributes<HTMLInputElement> &
       React.RefAttributes<HTMLInputElement>
   >;
-  Portal: ({ children }: { children?: React.ReactNode }) => React.ReactPortal;
+  Portal: typeof PhoneInputPortal;
   Root: typeof PhoneInputRoot;
   Trigger: typeof PhoneInputTrigger;
 };

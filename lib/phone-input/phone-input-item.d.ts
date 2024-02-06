@@ -9,6 +9,7 @@ type UsePhoneInputItemProps = {
 };
 export declare function usePhoneInputItem(props: UsePhoneInputItemProps): {
   getListItemProps: (itemProps: { value: string }) => {
+    'aria-controls': string;
     'aria-selected': boolean;
     role: 'option';
   };
