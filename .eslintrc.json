@@ -40,7 +40,8 @@
     "jsx-a11y/no-autofocus": "off",
     "react/button-has-type": "off",
     "jsx-a11y/no-noninteractive-element-interactions": "off",
-    "no-shadow": "off"
+    "no-shadow": "off",
+    "jsx-a11y/role-has-required-aria-props": "off"
   },
   "settings": {
     "import/resolver": {

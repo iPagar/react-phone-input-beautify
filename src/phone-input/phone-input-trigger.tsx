@@ -21,6 +21,9 @@ export function PhoneInputTrigger(
   return (
     <button
       {...props}
+      aria-expanded={isDialogOpen}
+      aria-haspopup="listbox"
+      aria-label="Country selector"
       className={clsx(styles.phoneInputTrigger, className)}
       data-open={isDialogOpen}
       onClick={handleTogglePopover}
@@ -31,6 +34,8 @@ export function PhoneInputTrigger(
           });
         }
       }}
+      // eslint-disable-next-line no-use-before-define
+      role="combobox"
       type="button"
     >
       {children}
@@ -38,10 +43,13 @@ export function PhoneInputTrigger(
   );
 }
 
-export function usePhoneInputTrigger() {
+export function usePhoneInputTrigger(props: { open: boolean }) {
   return {
     triggerProps: {
+      'aria-expanded': props.open,
+      'aria-haspopup': 'listbox',
       'aria-label': 'Select country',
+      role: 'combobox',
       type: 'button',
     } as const,
   };
