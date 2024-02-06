@@ -42,6 +42,7 @@ export function PhoneInputItem(
     <li
       {...props}
       {...itemProps}
+      aria-controls={country}
       className={clsx(styles.countrySelectItem, className)}
       onClick={handleSelect}
       onKeyDown={handleKeyDown}
@@ -62,6 +63,7 @@ export function usePhoneInputItem(props: UsePhoneInputItemProps) {
   return {
     getListItemProps: useCallback(
       (itemProps: { value: string }) => ({
+        'aria-controls': itemProps.value,
         'aria-selected': selected === itemProps.value,
         role: 'option' as const,
       }),

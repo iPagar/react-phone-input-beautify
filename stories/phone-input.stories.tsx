@@ -268,7 +268,10 @@ export function StyledWithAnimation() {
         >
           {({ open }) => (
             <>
-              <PhoneInput.Trigger className={styles.countrySelect}>
+              <PhoneInput.Trigger
+                className={styles.countrySelect}
+                id="country-selector"
+              >
                 <CountryFlag className={styles.countryFlag} country={country} />
                 <div className={styles.countryIcon}>
                   <svg
@@ -308,8 +311,10 @@ export function StyledWithAnimation() {
                     </div>
                     {open && (
                       <input
+                        aria-labelledby="country-selector search-input"
                         autoFocus
                         className={styles.countrySelectSearchInput}
+                        id="search-input"
                         onChange={(e) => setSearch(e.target.value)}
                         placeholder="Search"
                         type="text"

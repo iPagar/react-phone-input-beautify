@@ -23,7 +23,9 @@ export function usePhone(
   const { getListItemProps } = usePhoneInputItem({
     selected: state.country,
   });
-  const { triggerProps } = usePhoneInputTrigger();
+  const { triggerProps } = usePhoneInputTrigger({
+    open: props.isDialogOpen,
+  });
   const { phoneInputDialogProps } = usePhoneInputDialog({
     open: props.isDialogOpen,
   });
