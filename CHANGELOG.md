@@ -1,3 +1,10 @@
+## [1.0.5](https://github.com/iPagar/react-phone-input-beatify/compare/v1.0.4...v1.0.5) (2024-02-06)
+
+
+### Bug Fixes
+
+* Add link to Storybook in README.md ([73543a4](https://github.com/iPagar/react-phone-input-beatify/commit/73543a4ab8c4e18155da8412dbf2ce18046b1abc))
+
 ## [1.0.4](https://github.com/iPagar/react-phone-input-beatify/compare/v1.0.3...v1.0.4) (2024-02-06)
 
 
