@@ -380,3 +380,142 @@ export function FormatPhoneNumber() {
   return <div>{phoneNumber}</div>;
 }
 ```
+
+### Add animation to the dialog
+
+You can use the `react-spring` library to add animation to the dialog.
+
+```jsx
+import { useSpring, animated } from 'react-spring';
+
+export function AnimatedReactSpringDialog() {
+  return (
+    <PhoneInput.Root>
+      {({ country }) => (
+        <PhoneInput.Trigger>
+          <CountryFlag country={country} />
+        </PhoneInput.Trigger>
+      )}
+      {({ countryList, open }) => {
+        const spring = useSpring({
+          from: { opacity: 0, transform: 'translateY(-20px)' },
+          to: {
+            opacity: open ? 1 : 0,
+            transform: open ? 'translateY(0)' : 'translateY(-20px)',
+            pointerEvents: open ? 'all' : 'none',
+          },
+        });
+
+        return (
+          <PhoneInput.Dialog open>
+            <animated.div style={spring}>
+              <ul>
+                {countryList.map((countryItem) => (
+                  <PhoneInput.Item
+                    country={countryItem.alpha2}
+                    key={countryItem.alpha2}
+                  >
+                    {countryItem.name}
+                  </PhoneInput.Item>
+                ))}
+              </ul>
+            </animated.div>
+          </PhoneInput.Dialog>
+        );
+      }}
+      <PhoneInput.NumberInput />
+    </PhoneInput.Root>
+  );
+}
+```
+
+Or with framer-motion:
+
+```jsx
+export function AnimatedFramerMotionDialog() {
+  return (
+    <PhoneInput.Root>
+      {({ country }) => (
+        <PhoneInput.Trigger>
+          <CountryFlag country={country} />
+        </PhoneInput.Trigger>
+      )}
+      {({ countryList, open }) => (
+        <AnimatePresence>
+          {open && (
+            <PhoneInput.Dialog open>
+              <motion.div
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                initial={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.5 }}
+              >
+                <ul>
+                  {countryList.map((countryItem) => (
+                    <PhoneInput.Item
+                      country={countryItem.alpha2}
+                      key={countryItem.alpha2}
+                    >
+                      {countryItem.name}
+                    </PhoneInput.Item>
+                  ))}
+                </ul>
+              </motion.div>
+            </PhoneInput.Dialog>
+          )}
+        </AnimatePresence>
+      )}
+
+      <PhoneInput.NumberInput placeholder="Phone" />
+    </PhoneInput.Root>
+  );
+}
+```
+
+Or just use the common CSS transition.
+
+```jsx
+export function AnimatedDialog() {
+  return (
+    <PhoneInput.Root>
+      {({ country }) => (
+        <PhoneInput.Trigger>
+          <CountryFlag country={country} />
+        </PhoneInput.Trigger>
+      )}
+      {({ countryList }) => (
+        <PhoneInput.Dialog className={styles.dialog}>
+          <ul>
+            {countryList.map((countryItem) => (
+              <PhoneInput.Item
+                country={countryItem.alpha2}
+                key={countryItem.alpha2}
+              >
+                {countryItem.name}
+              </PhoneInput.Item>
+            ))}
+          </ul>
+        </PhoneInput.Dialog>
+      )}
+      <PhoneInput.NumberInput />
+    </PhoneInput.Root>
+  );
+}
+```
+
+```scss
+.dialog {
+  transform: scale(0.9);
+  opacity: 0;
+  transition:
+    transform 0.3s ease,
+    opacity 0.3s ease;
+  pointer-events: none;
+
+  &[aria-hidden='false'] {
+    transform: scale(1);
+    opacity: 1;
+    pointer-events: all;
+  }
+}
+```

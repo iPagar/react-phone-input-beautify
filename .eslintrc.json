@@ -41,7 +41,8 @@
     "react/button-has-type": "off",
     "jsx-a11y/no-noninteractive-element-interactions": "off",
     "no-shadow": "off",
-    "jsx-a11y/role-has-required-aria-props": "off"
+    "jsx-a11y/role-has-required-aria-props": "off",
+    "import/no-extraneous-dependencies": "off"
   },
   "settings": {
     "import/resolver": {

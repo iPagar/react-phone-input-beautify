@@ -1,7 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import clsx from 'clsx';
+import { AnimatePresence, motion } from 'framer-motion';
 import React, { HTMLProps, forwardRef, useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { animated, useSpring } from 'react-spring';
 import { z } from 'zod';
 
 import { CountryFlag } from '../src/country-flag/country-flag';
@@ -86,6 +88,85 @@ const FormPhoneInput = forwardRef(
     );
   }
 );
+
+export function AnimatedReactSpringDialog() {
+  return (
+    <PhoneInput.Root>
+      {({ country }) => (
+        <PhoneInput.Trigger>
+          <CountryFlag country={country} />
+        </PhoneInput.Trigger>
+      )}
+      {({ countryList, open }) => {
+        const spring = useSpring({
+          from: { opacity: 0, transform: 'translateY(-20px)' },
+          to: {
+            opacity: open ? 1 : 0,
+            pointerEvents: open ? 'all' : 'none',
+            transform: open ? 'translateY(0)' : 'translateY(-20px)',
+          },
+        });
+
+        return (
+          <PhoneInput.Dialog open>
+            <animated.div style={spring}>
+              <ul>
+                {countryList.map((countryItem) => (
+                  <PhoneInput.Item
+                    country={countryItem.alpha2}
+                    key={countryItem.alpha2}
+                  >
+                    {countryItem.name}
+                  </PhoneInput.Item>
+                ))}
+              </ul>
+            </animated.div>
+          </PhoneInput.Dialog>
+        );
+      }}
+      <PhoneInput.NumberInput placeholder="Phone" />
+    </PhoneInput.Root>
+  );
+}
+
+export function AnimatedFramerMotionDialog() {
+  return (
+    <PhoneInput.Root>
+      {({ country }) => (
+        <PhoneInput.Trigger>
+          <CountryFlag country={country} />
+        </PhoneInput.Trigger>
+      )}
+      {({ countryList, open }) => (
+        <AnimatePresence>
+          {open && (
+            <PhoneInput.Dialog open>
+              <motion.div
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                initial={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.5 }}
+              >
+                <ul>
+                  {countryList.map((countryItem) => (
+                    <PhoneInput.Item
+                      country={countryItem.alpha2}
+                      key={countryItem.alpha2}
+                    >
+                      {countryItem.name}
+                    </PhoneInput.Item>
+                  ))}
+                </ul>
+              </motion.div>
+            </PhoneInput.Dialog>
+          )}
+        </AnimatePresence>
+      )}
+
+      <PhoneInput.NumberInput placeholder="Phone" />
+    </PhoneInput.Root>
+  );
+}
 
 export function ReactHookFormAndZod() {
   const {
