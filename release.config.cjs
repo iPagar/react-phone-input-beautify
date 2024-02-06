@@ -7,7 +7,18 @@ module.exports = {
     [
       '@semantic-release/commit-analyzer',
       {
-        preset: 'conventionalcommits',
+        parserOpts: {
+          noteKeywords: ['BREAKING CHANGE', 'BREAKING CHANGES'],
+        },
+        preset: 'eslint',
+        releaseRules: [
+          { release: 'patch', type: 'docs' },
+          { release: 'patch', type: 'refactor' },
+          { release: 'patch', type: 'style' },
+          { release: 'patch', type: 'test' },
+          { release: 'patch', type: 'build' },
+          { release: 'patch', type: 'ci' },
+        ],
       },
     ],
     '@semantic-release/release-notes-generator',
