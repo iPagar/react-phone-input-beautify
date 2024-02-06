@@ -1,4 +1,13 @@
 import React from 'react';
 export declare function PhoneInputDialog(
-  props: React.HTMLAttributes<HTMLDivElement>
+  props: Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> & {
+    children?: React.ReactNode;
+    onOpenChange?: (open: boolean) => void;
+    open?: boolean;
+  }
 ): React.JSX.Element | null;
+export declare function usePhoneInputDialog(props: { open: boolean }): {
+  phoneInputDialogProps: {
+    'aria-hidden': boolean;
+  };
+};

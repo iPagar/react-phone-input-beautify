@@ -1,3 +1,3 @@
-export * from './use-phone-input';
+export * from './use-phone-state/use-phone-state';
 export * from './country-flag';
 export * from './phone-input';

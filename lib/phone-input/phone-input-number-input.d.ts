@@ -1,4 +1,11 @@
 import React from 'react';
-export declare function PhoneInputNumberInput(
-  props: React.InputHTMLAttributes<HTMLInputElement>
-): React.JSX.Element;
+export declare const PhoneInputNumberInput: React.ForwardRefExoticComponent<
+  React.InputHTMLAttributes<HTMLInputElement> &
+    React.RefAttributes<HTMLInputElement>
+>;
+export declare function usePhoneInputNumberInput(): {
+  numberInputProps: {
+    className: string;
+    type: string;
+  };
+};
