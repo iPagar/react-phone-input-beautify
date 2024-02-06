@@ -4,6 +4,10 @@
 
 The `PhoneInput` component is an advanced input field tailored for inputting and validating international phone numbers. It comes equipped with features such as country selection, automatic phone number formatting, and comprehensive validation mechanisms.
 
+## Storybook
+
+See the `PhoneInput` component in action by visiting the [Storybook](https://ipagar.github.io/react-phone-input-beatify).
+
 ## Installation
 
 Install the `PhoneInput` component using npm or yarn:
