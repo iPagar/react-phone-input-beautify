@@ -6,7 +6,7 @@ The `PhoneInput` component is an advanced input field tailored for inputting and
 
 ## Storybook
 
-See the `PhoneInput` component in action by visiting the [Storybook](https://ipagar.github.io/react-phone-input-beatify).
+See the `PhoneInput` component in action by visiting the [Storybook](https://ipagar.github.io/react-phone-input-beautify).
 
 ## Installation
 
@@ -15,13 +15,13 @@ Install the `PhoneInput` component using npm or yarn:
 - **npm**
 
   ```bash
-  npm install react-phone-input-beatify
+  npm install react-phone-input-beautify
   ```
 
 - **Yarn**
 
   ```bash
-  yarn add react-phone-input-beatify
+  yarn add react-phone-input-beautify
   ```
 
 ## Key Features
@@ -32,7 +32,7 @@ Install the `PhoneInput` component using npm or yarn:
 
 ## Usage
 
-To incorporate the `PhoneInput` component into your application, import it from `react-phone-input-beatify`. The component supports various customization options through props, allowing you to tailor its functionality to suit your needs.
+To incorporate the `PhoneInput` component into your application, import it from `react-phone-input-beautify`. The component supports various customization options through props, allowing you to tailor its functionality to suit your needs.
 
 The component also offers integration capabilities with form libraries such as `react-hook-form` and validation libraries like `zod`, enabling you to create custom input components that align with your form handling and validation logic.
 

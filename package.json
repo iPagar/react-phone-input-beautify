@@ -1,5 +1,5 @@
 {
-  "name": "react-phone-input-beatify",
+  "name": "react-phone-input-beautify",
   "version": "1.0.6",
   "description": "",
   "main": "lib/lib.mjs",
@@ -7,7 +7,7 @@
   "types": "lib/lib.d.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/iPagar/react-phone-input-beatify.git"
+    "url": "https://github.com/iPagar/react-phone-input-beautify.git"
   },
   "scripts": {
     "build": "vite build ",
