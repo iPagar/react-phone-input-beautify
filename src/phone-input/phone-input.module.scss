@@ -4,9 +4,10 @@
   &NumberInput {
     outline: none;
     border: none;
+    background: none;
 
     &:-webkit-autofill {
-      -webkit-box-shadow: 0 0 0 30px white inset;
+      transition: background-color 5000s ease-in-out 0s;
     }
   }
 
