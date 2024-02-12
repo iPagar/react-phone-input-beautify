@@ -12,6 +12,7 @@ import {
   phoneValidationSchema,
   usePhoneState,
 } from '../src/use-phone-state/use-phone-state';
+import Modal from './base/modal';
 import styles from './phone-input-stories.module.scss';
 
 export default {
@@ -586,6 +587,39 @@ export function Portal() {
       )}
       <PhoneInput.NumberInput placeholder="Phone" />
     </PhoneInput.Root>
+  );
+}
+
+export function ModalPortal() {
+  return (
+    <Modal>
+      <div className={styles.modal}>
+        <PhoneInput.Root>
+          {({ country }) => (
+            <PhoneInput.Trigger>
+              <CountryFlag country={country} />
+            </PhoneInput.Trigger>
+          )}
+          {({ countryList }) => (
+            <PhoneInput.Portal>
+              <PhoneInput.Dialog>
+                <ul>
+                  {countryList.map((countryItem) => (
+                    <PhoneInput.Item
+                      country={countryItem.alpha2}
+                      key={countryItem.alpha2}
+                    >
+                      {countryItem.name}
+                    </PhoneInput.Item>
+                  ))}
+                </ul>
+              </PhoneInput.Dialog>
+            </PhoneInput.Portal>
+          )}
+          <PhoneInput.NumberInput placeholder="Phone" />
+        </PhoneInput.Root>
+      </div>
+    </Modal>
   );
 }
 
