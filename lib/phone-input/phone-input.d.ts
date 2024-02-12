@@ -5,61 +5,52 @@ import { PhoneInputDialog } from './phone-input-dialog';
 import { PhoneInputItem } from './phone-input-item';
 import PhoneInputPortal from './phone-input-portal';
 import { PhoneInputTrigger } from './phone-input-trigger';
-export declare function usePhone(
-  props: {
+export declare function usePhone(props: {
     isDialogOpen: boolean;
-  },
-  state: ReturnType<typeof usePhoneState>
-): {
-  getListItemProps: (itemProps: { value: string }) => {
-    'aria-controls': string;
-    'aria-selected': boolean;
-    role: 'option';
-  };
-  numberInputProps: {
-    className: string;
-    type: string;
-  };
-  phoneInputDialogProps: {
-    'aria-hidden': boolean;
-  };
-  triggerProps: {
-    readonly 'aria-expanded': boolean;
-    readonly 'aria-haspopup': 'listbox';
-    readonly 'aria-label': 'Select country';
-    readonly role: 'combobox';
-    readonly type: 'button';
-  };
+}, state: ReturnType<typeof usePhoneState>): {
+    getListItemProps: (itemProps: {
+        value: string;
+    }) => {
+        'aria-controls': string;
+        'aria-selected': boolean;
+        role: "option";
+    };
+    numberInputProps: {
+        className: string;
+        type: string;
+    };
+    phoneInputDialogProps: {
+        'aria-hidden': boolean;
+    };
+    triggerProps: {
+        readonly 'aria-expanded': boolean;
+        readonly 'aria-haspopup': "listbox";
+        readonly 'aria-label': "Select country";
+        readonly role: "combobox";
+        readonly type: "button";
+    };
 };
 type UsePhoneStateParams = Parameters<typeof usePhoneState>[0];
 type ChildrenFunc = (props: {
-  country: string;
-  countryList: ISO31661AssignedEntry[];
-  onPhoneChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  open: boolean;
-  phone: string;
+    country: string;
+    countryList: ISO31661AssignedEntry[];
+    onPhoneChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    open: boolean;
+    phone: string;
 }) => React.ReactNode;
-export declare function PhoneInputRoot(
-  props: Omit<HTMLAttributes<HTMLDivElement>, 'children'> & {
+export declare function PhoneInputRoot(props: Omit<HTMLAttributes<HTMLDivElement>, 'children'> & {
     onCountryChange?: (country: string) => void;
     onPhoneChange?: (phone: string) => void;
     onValidationChange?: (valid: boolean) => void;
-  } & UsePhoneStateParams & {
-      children?:
-        | (ChildrenFunc | React.ReactNode)[]
-        | ChildrenFunc
-        | React.ReactNode;
-    }
-): React.JSX.Element;
+} & UsePhoneStateParams & {
+    children?: (ChildrenFunc | React.ReactNode)[] | ChildrenFunc | React.ReactNode;
+}): React.JSX.Element;
 declare const PhoneInput: {
-  Dialog: typeof PhoneInputDialog;
-  Item: typeof PhoneInputItem;
-  NumberInput: React.ForwardRefExoticComponent<
-    React.InputHTMLAttributes<HTMLInputElement> &
-      React.RefAttributes<HTMLInputElement>
-  >;
-  Portal: typeof PhoneInputPortal;
-  Root: typeof PhoneInputRoot;
-  Trigger: typeof PhoneInputTrigger;
+    Dialog: typeof PhoneInputDialog;
+    Item: typeof PhoneInputItem;
+    NumberInput: React.ForwardRefExoticComponent<React.InputHTMLAttributes<HTMLInputElement> & React.RefAttributes<HTMLInputElement>>;
+    Portal: typeof PhoneInputPortal;
+    Root: typeof PhoneInputRoot;
+    Trigger: typeof PhoneInputTrigger;
 };
 export { PhoneInput };
