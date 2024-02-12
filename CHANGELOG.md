@@ -1,3 +1,10 @@
+## [1.0.8](https://github.com/iPagar/react-phone-input-beautify/compare/v1.0.7...v1.0.8) (2024-02-12)
+
+
+### Bug Fixes
+
+* trigger release ([c748193](https://github.com/iPagar/react-phone-input-beautify/commit/c748193763f1721b7a3ad688ce291102bc05ae0e))
+
 ## [1.0.7](https://github.com/iPagar/react-phone-input-beautify/compare/v1.0.6...v1.0.7) (2024-02-12)
 
 
