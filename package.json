@@ -10,7 +10,7 @@
     "url": "https://github.com/iPagar/react-phone-input-beautify.git"
   },
   "scripts": {
-    "build": "vite build ",
+    "build": "vite build",
     "test": "echo \"Error: no test specified\" && exit 1",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",

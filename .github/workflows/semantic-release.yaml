@@ -11,6 +11,25 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Важно для semantic-release/git
+
+      # Добавьте шаги для сборки вашего проекта
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
+      # Коммит собранных файлов
+      - name: Commit Build
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add -f lib
+          git commit -m "chore: add build assets [skip ci]" || true
+        # Используйте [skip ci], чтобы избежать бесконечного цикла
+
       - name: Semantic Release
         uses: cycjimmy/semantic-release-action@v4
         env:
