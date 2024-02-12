@@ -1,3 +1,4 @@
+/* eslint-disable no-template-curly-in-string */
 /**
  * @type {import('semantic-release').GlobalConfig}
  */
@@ -18,6 +19,13 @@ module.exports = {
       },
     ],
     '@semantic-release/npm',
-    '@semantic-release/git',
+    [
+      '@semantic-release/git',
+      {
+        assets: ['lib/**/*', 'CHANGELOG.md'],
+        message:
+          'chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}',
+      },
+    ],
   ],
 };
