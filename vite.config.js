@@ -6,9 +6,9 @@ import dts from 'vite-plugin-dts';
 export default defineConfig({
   build: {
     lib: {
-      entry: 'src/lib.ts', // Путь к входному файлу вашей библиотеки
+      entry: 'src/lib.ts',
       fileName: 'lib',
-      formats: ['es'],
+      formats: ['es', 'cjs'],
     },
     outDir: 'lib',
     rollupOptions: {
