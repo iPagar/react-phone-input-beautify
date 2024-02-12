@@ -560,6 +560,35 @@ export function Basic() {
   );
 }
 
+export function Portal() {
+  return (
+    <PhoneInput.Root>
+      {({ country }) => (
+        <PhoneInput.Trigger>
+          <CountryFlag country={country} />
+        </PhoneInput.Trigger>
+      )}
+      {({ countryList }) => (
+        <PhoneInput.Portal>
+          <PhoneInput.Dialog>
+            <ul>
+              {countryList.map((countryItem) => (
+                <PhoneInput.Item
+                  country={countryItem.alpha2}
+                  key={countryItem.alpha2}
+                >
+                  {countryItem.name}
+                </PhoneInput.Item>
+              ))}
+            </ul>
+          </PhoneInput.Dialog>
+        </PhoneInput.Portal>
+      )}
+      <PhoneInput.NumberInput placeholder="Phone" />
+    </PhoneInput.Root>
+  );
+}
+
 export function Flags() {
   const { country, countryList, handleCountryChange } = usePhoneState();
 

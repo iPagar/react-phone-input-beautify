@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 
+import { useWindowSize } from '../use-window-size';
 import styles from './phone-input.module.scss';
 import { usePhoneInput } from './phone-input-provider';
 
@@ -16,6 +17,7 @@ function PhoneInputPortal({
   const [portalElement, setPortalElement] = useState<HTMLDivElement | null>(
     null
   );
+  const size = useWindowSize();
 
   useEffect(() => {
     setIsPortal(true);
@@ -55,7 +57,7 @@ function PhoneInputPortal({
         body.removeChild(portalElement);
       }
     };
-  }, [portalElement, phoneInputRef]);
+  }, [portalElement, phoneInputRef, size]);
 
   // Если portalElement еще не создан, не рендерим портал
   if (!portalElement) {
