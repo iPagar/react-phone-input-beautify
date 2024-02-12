@@ -1,3 +1,10 @@
+## [1.0.7](https://github.com/iPagar/react-phone-input-beautify/compare/v1.0.6...v1.0.7) (2024-02-12)
+
+
+### Bug Fixes
+
+* Update phone input module styles ([0014dca](https://github.com/iPagar/react-phone-input-beautify/commit/0014dca1bb0f01fb770f6eccbf256d4f27dd5429))
+
 ## [1.0.6](https://github.com/iPagar/react-phone-input-beautify/compare/v1.0.5...v1.0.6) (2024-02-06)
 
 ### Bug Fixes
