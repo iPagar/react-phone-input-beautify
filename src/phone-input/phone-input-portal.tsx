@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 
 import { useWindowSize } from '../use-window-size';
@@ -28,6 +28,7 @@ function PhoneInputPortal({
 
     return () => {
       setIsPortal(false);
+
       // Удаляем элемент портала при размонтировании компонента
       if (portalElement && portalElement.parentNode) {
         portalElement.parentNode.removeChild(portalElement);
@@ -35,29 +36,31 @@ function PhoneInputPortal({
     };
   }, []); // Пустой массив зависимостей, чтобы эффект выполнился один раз после монтирования
 
-  useEffect(() => {
-    if (!portalElement || !phoneInputRef?.current) return () => {};
+  useLayoutEffect(() => {
+    if (portalElement && phoneInputRef?.current) {
+      const targetContainer = phoneInputRef.current;
+      const rect = phoneInputRef.current.getBoundingClientRect();
 
-    const { body } = document;
-    const rect = phoneInputRef.current.getBoundingClientRect();
-    // Устанавливаем стили для позиционирования портала
-    portalElement.style.position = 'absolute';
-    portalElement.style.top = `${rect.bottom + window.scrollY}px`;
-    portalElement.style.left = `${rect.left + window.scrollX}px`;
-    portalElement.style.width = `${rect.width}px`;
+      portalElement.style.position = 'absolute';
+      portalElement.style.top = `${rect.bottom}px`;
+      portalElement.style.left = `${rect.left}px`;
+      portalElement.style.width = `${rect.width}px`;
 
-    if (className) {
-      portalElement.classList.add(className);
+      if (className) {
+        portalElement.classList.add(className);
+      }
+
+      targetContainer.appendChild(portalElement);
+
+      return () => {
+        if (portalElement.parentNode === targetContainer) {
+          targetContainer.removeChild(portalElement);
+        }
+      };
     }
 
-    body.appendChild(portalElement);
-
-    return () => {
-      if (portalElement) {
-        body.removeChild(portalElement);
-      }
-    };
-  }, [portalElement, phoneInputRef, size]);
+    return () => {};
+  }, [portalElement, phoneInputRef, size]); // Эффект для обработки изменений container
 
   // Если portalElement еще не создан, не рендерим портал
   if (!portalElement) {

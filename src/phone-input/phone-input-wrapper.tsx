@@ -1,15 +1,20 @@
 import clsx from 'clsx';
-import React, { useEffect } from 'react';
+import React, { useLayoutEffect } from 'react';
 
 import styles from './phone-input.module.scss';
 import { usePhoneInput } from './phone-input-provider';
 
 export function PhoneInputWrapper(props: React.HTMLAttributes<HTMLDivElement>) {
-  const { phoneInputRef, setDialogPosition, setPhoneInputRef } =
-    usePhoneInput();
+  const {
+    isDialogOpen,
+    isPortal,
+    phoneInputRef,
+    setDialogPosition,
+    setPhoneInputRef,
+  } = usePhoneInput();
   const { className } = props;
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (phoneInputRef?.current) {
       const triggerRect = phoneInputRef.current.getBoundingClientRect();
       // Calculate the top position of the dialog
@@ -17,7 +22,7 @@ export function PhoneInputWrapper(props: React.HTMLAttributes<HTMLDivElement>) {
 
       setDialogPosition({ top: popoverTop });
     }
-  }, [phoneInputRef]);
+  }, [phoneInputRef, isDialogOpen]);
 
   return (
     <div
@@ -29,6 +34,9 @@ export function PhoneInputWrapper(props: React.HTMLAttributes<HTMLDivElement>) {
             current: ref,
           });
         }
+      }}
+      style={{
+        ...(!isPortal ? { position: 'relative' } : {}),
       }}
     />
   );

@@ -49,7 +49,7 @@ export function PhoneInputDialog(
         isPortal && styles.phoneInputDialogPortal
       )}
       ref={dialogRef}
-      style={!isPortal ? { top: dialogPosition.top } : {}}
+      style={{ top: dialogPosition.top }}
     >
       {children}
     </div>

@@ -3,7 +3,15 @@
  * @type {import('semantic-release').GlobalConfig}
  */
 module.exports = {
-  branches: ['main'],
+  branches: [
+    'main',
+    {
+      channel: 'beta',
+      name: 'beta',
+      prerelease: true,
+      range: 'beta.x',
+    },
+  ],
   plugins: [
     [
       '@semantic-release/commit-analyzer',
