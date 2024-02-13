@@ -1,12 +1,14 @@
-## [1.0.7-beta.1](https://github.com/iPagar/react-phone-input-beautify/compare/v1.0.6...v1.0.7-beta.1) (2024-02-13)
-
+## [1.0.8](https://github.com/iPagar/react-phone-input-beautify/compare/v1.0.7...v1.0.8) (2024-02-12)
 
 ### Bug Fixes
 
-* Add beta branch to push event ([277b561](https://github.com/iPagar/react-phone-input-beautify/commit/277b561ac97efd63826716d37194b025957c3ca9))
-* Update phone input module styles ([0014dca](https://github.com/iPagar/react-phone-input-beautify/commit/0014dca1bb0f01fb770f6eccbf256d4f27dd5429))
-* Update release.config.cjs and phone-input components ([96279c4](https://github.com/iPagar/react-phone-input-beautify/commit/96279c47e77d8dbf9a263c59fd4783ce94c8532a))
-* Update release.config.cjs to set prerelease value for beta channel ([98231b1](https://github.com/iPagar/react-phone-input-beautify/commit/98231b134d71b406a9b54fc471a1d77b5a791b35))
+- trigger release ([c748193](https://github.com/iPagar/react-phone-input-beautify/commit/c748193763f1721b7a3ad688ce291102bc05ae0e))
+
+## [1.0.7](https://github.com/iPagar/react-phone-input-beautify/compare/v1.0.6...v1.0.7) (2024-02-12)
+
+### Bug Fixes
+
+- Update phone input module styles ([0014dca](https://github.com/iPagar/react-phone-input-beautify/commit/0014dca1bb0f01fb770f6eccbf256d4f27dd5429))
 
 ## [1.0.6](https://github.com/iPagar/react-phone-input-beautify/compare/v1.0.5...v1.0.6) (2024-02-06)
 
