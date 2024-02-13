@@ -3,6 +3,7 @@ import {
   AsYouType,
   CountryCode,
   getCountryCallingCode,
+  getPhoneCode,
   isValidPhoneNumber,
   parsePhoneNumberFromString,
 } from 'libphonenumber-js';
@@ -27,10 +28,20 @@ export const phoneValidationSchema = (
       }
     }, invalid);
 
-export function formatPhoneNumber(phoneNumber: string) {
+export function formatPhoneNumber(phoneNumber: string, country?: string) {
   const parsedNumber = parsePhoneNumberFromString(phoneNumber);
   if (!parsedNumber) {
-    return phoneNumber;
+    try {
+      const phoneCode = getPhoneCode(country as CountryCode);
+
+      if (phoneCode) {
+        return `+${phoneCode}`;
+      }
+    } catch (error) {
+      return parsedNumber;
+    }
+
+    return parsedNumber;
   }
 
   return parsedNumber.formatInternational();
@@ -46,7 +57,7 @@ export const usePhoneState = ({
 } = {}) => {
   const [country, setCountry] = useState(initialCountry);
   const [phoneNumber, setPhoneNumber] = useState(
-    formatPhoneNumber(initialPhoneNumber)
+    formatPhoneNumber(initialPhoneNumber, initialCountry)
   );
   const [isValid, setIsValid] = useState(
     phoneValidationSchema().safeParse(initialPhoneNumber).success

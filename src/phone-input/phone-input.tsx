@@ -60,9 +60,18 @@ export function PhoneInputRoot(
         | React.ReactNode;
     }
 ) {
-  const { children, onCountryChange, onPhoneChange, onValidationChange } =
-    props;
-  const state = usePhoneState();
+  const {
+    children,
+    initialCountry,
+    initialPhoneNumber,
+    onCountryChange,
+    onPhoneChange,
+    onValidationChange,
+  } = props;
+  const state = usePhoneState({
+    initialCountry,
+    initialPhoneNumber,
+  });
   const [isOpen, setIsOpen] = React.useState(false);
   const phoneProps = usePhone({ isDialogOpen: isOpen }, state);
   const [onOpenChange, setOnOpenChange] = useState<(open: boolean) => void>();

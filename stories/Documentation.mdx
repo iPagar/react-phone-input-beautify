@@ -99,6 +99,7 @@ const FormPhoneInput = forwardRef(
     return (
       <PhoneInput.Root
         className={styles.formPhoneInput}
+        initialCountry={country}
         onCountryChange={(newCountry) => {
           setCountry(newCountry);
         }}

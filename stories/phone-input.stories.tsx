@@ -43,11 +43,12 @@ const FormPhoneInput = forwardRef(
     return (
       <PhoneInput.Root
         className={styles.formPhoneInput}
+        initialCountry={country}
         onCountryChange={(newCountry) => {
           setCountry(newCountry);
         }}
       >
-        {({ countryList }) => (
+        {({ countryList, phone }) => (
           <>
             <PhoneInput.Trigger>
               <CountryFlag
@@ -82,7 +83,12 @@ const FormPhoneInput = forwardRef(
                 </ul>
               </>
             </PhoneInput.Dialog>
-            <PhoneInput.NumberInput {...props} onChange={onChange} ref={ref} />
+            <PhoneInput.NumberInput
+              {...props}
+              onChange={onChange}
+              ref={ref}
+              value={phone}
+            />
           </>
         )}
       </PhoneInput.Root>
