@@ -8,8 +8,7 @@ module.exports = {
     {
       channel: 'beta',
       name: 'beta',
-      prerelease: true,
-      range: 'beta.x',
+      prerelease: 'beta',
     },
   ],
   plugins: [
