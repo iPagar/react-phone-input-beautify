@@ -3,7 +3,7 @@ export declare const phoneValidationSchema: ({ invalid, required }?: {
     invalid: string;
     required: string;
 }) => z.ZodEffects<z.ZodString, string, string>;
-export declare function formatPhoneNumber(phoneNumber: string): string;
+export declare function formatPhoneNumber(phoneNumber: string, country?: string): string | undefined;
 /**
  * @param initialCountry - format is ISO 3166-1 alpha-2
  * @param initialPhoneNumber - any string
@@ -17,5 +17,5 @@ export declare const usePhoneState: ({ initialCountry, initialPhoneNumber, }?: {
     handleCountryChange: (newCountry: string) => void;
     handlePhoneNumberChange: (newPhoneNumber: string) => string;
     isValid: boolean;
-    phoneNumber: string;
+    phoneNumber: string | undefined;
 };
