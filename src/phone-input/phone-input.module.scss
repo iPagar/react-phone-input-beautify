@@ -1,46 +1,48 @@
-.phoneInput {
-  position: relative;
+@layer library {
+  .phoneInput {
+    position: relative;
 
-  &NumberInput {
-    outline: none;
-    border: none;
-    background: none;
+    &NumberInput {
+      outline: none;
+      border: none;
+      background: none;
 
-    &:-webkit-autofill {
-      transition: background-color 5000s ease-in-out 0s;
+      &:-webkit-autofill {
+        transition: background-color 5000s ease-in-out 0s;
+      }
+    }
+
+    &Trigger {
+      background: none;
+      border: none;
+
+      & * {
+        pointer-events: none;
+      }
+    }
+
+    &Dialog {
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      overflow: auto;
+      max-height: 200px;
+
+      &Open {
+        display: block;
+      }
+
+      &Portal {
+        position: static;
+      }
     }
   }
 
-  &Trigger {
-    background: none;
-    border: none;
-
-    & * {
-      pointer-events: none;
-    }
-  }
-
-  &Dialog {
-    display: none;
+  .portal {
     position: absolute;
     top: 0;
     left: 0;
-    overflow: auto;
-    max-height: 200px;
-
-    &Open {
-      display: block;
-    }
-
-    &Portal {
-      position: static;
-    }
+    z-index: 1000;
   }
-}
-
-.portal {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 1000;
 }
