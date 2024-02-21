@@ -28,6 +28,14 @@ export const phoneValidationSchema = (
       }
     }, invalid);
 
+export function getCountryCode(phone: string) {
+  const parsedNumber = parsePhoneNumberFromString(phone);
+  if (!parsedNumber) {
+    return '';
+  }
+  return parsedNumber.country;
+}
+
 export function formatPhoneNumber(phoneNumber: string, country?: string) {
   const parsedNumber = parsePhoneNumberFromString(phoneNumber);
   if (!parsedNumber) {
@@ -55,7 +63,9 @@ export const usePhoneState = ({
   initialCountry = 'US',
   initialPhoneNumber = '',
 } = {}) => {
-  const [country, setCountry] = useState(initialCountry);
+  const [country, setCountry] = useState(
+    getCountryCode(initialPhoneNumber) || initialCountry
+  );
   const [phoneNumber, setPhoneNumber] = useState(
     formatPhoneNumber(initialPhoneNumber, initialCountry)
   );

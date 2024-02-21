@@ -554,7 +554,9 @@ export function BasicWithCountryFlag() {
           </ul>
         </PhoneInput.Dialog>
       )}
-      <PhoneInput.NumberInput placeholder="Phone" />
+      {({ phone }) => (
+        <PhoneInput.NumberInput placeholder="Phone" value={phone} />
+      )}
     </PhoneInput.Root>
   );
 }
