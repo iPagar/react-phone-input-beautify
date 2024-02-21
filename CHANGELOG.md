@@ -1,3 +1,10 @@
+## [1.0.9-beta.2](https://github.com/iPagar/react-phone-input-beautify/compare/v1.0.9-beta.1...v1.0.9-beta.2) (2024-02-21)
+
+
+### Bug Fixes
+
+* Add getCountryCode function to retrieve the country code from a phone number ([22ee5ed](https://github.com/iPagar/react-phone-input-beautify/commit/22ee5edd5ddf8492b15fc5681f9aed59252bfd4e))
+
 ## [1.0.9-beta.1](https://github.com/iPagar/react-phone-input-beautify/compare/v1.0.8...v1.0.9-beta.1) (2024-02-13)
 
 
