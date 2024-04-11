@@ -67,6 +67,7 @@ export function PhoneInputRoot(
     onCountryChange,
     onPhoneChange,
     onValidationChange,
+    ...rest
   } = props;
   const state = usePhoneState({
     initialCountry,
@@ -142,7 +143,7 @@ export function PhoneInputRoot(
       props={phoneProps}
       state={state}
     >
-      <PhoneInputWrapper {...props}>{renderedChildren}</PhoneInputWrapper>
+      <PhoneInputWrapper {...rest}>{renderedChildren}</PhoneInputWrapper>
     </PhoneInputContextProvider>
   );
 }
