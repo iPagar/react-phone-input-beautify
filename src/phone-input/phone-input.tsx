@@ -111,22 +111,29 @@ export function PhoneInputRoot(
   }, [onPhoneChange, state.phoneNumber]);
 
   // Функция для обработки children
-  const processChildren = (child: ChildrenFunc | React.ReactNode) => {
+  const processChildren = (
+    child: ChildrenFunc | React.ReactNode,
+    key?: number
+  ) => {
     if (typeof child === 'function') {
-      return child({
+      const redactored = child({
         country: state.country,
         countryList: state.countryList,
+        key,
         onPhoneChange: (e) => state.handlePhoneNumberChange(e.target.value),
         open: isOpen,
         phone: state.phoneNumber,
       });
+
+      return React.cloneElement(redactored, { key });
     }
-    return child;
+
+    return React.cloneElement(child, { key });
   };
 
   // Обработка children, если это массив или одиночный элемент/функция
   const renderedChildren = Array.isArray(children)
-    ? children.map((child) => processChildren(child))
+    ? children.map((child, index) => processChildren(child, index))
     : processChildren(children);
 
   return (
