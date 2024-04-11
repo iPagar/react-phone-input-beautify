@@ -12,7 +12,7 @@ export function PhoneInputDialog(
     open?: boolean;
   }
 ) {
-  const { children, className, onOpenChange, open } = props;
+  const { children, className, onOpenChange, open, ...otherProps } = props;
   const {
     dialogPosition,
     isDialogOpen,
@@ -40,7 +40,7 @@ export function PhoneInputDialog(
 
   return (
     <div
-      {...props}
+      {...otherProps}
       {...phoneInputDialogProps}
       className={clsx(
         styles.phoneInputDialog,
