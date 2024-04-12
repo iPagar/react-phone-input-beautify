@@ -1,3 +1,10 @@
+## [1.0.9-beta.3](https://github.com/iPagar/react-phone-input-beautify/compare/v1.0.9-beta.2...v1.0.9-beta.3) (2024-04-12)
+
+
+### Bug Fixes
+
+* remove console.log ([3832a7f](https://github.com/iPagar/react-phone-input-beautify/commit/3832a7f9791c4af8b563f0f338b99deb80bbba04))
+
 ## [1.0.9-beta.2](https://github.com/iPagar/react-phone-input-beautify/compare/v1.0.9-beta.1...v1.0.9-beta.2) (2024-02-21)
 
 
