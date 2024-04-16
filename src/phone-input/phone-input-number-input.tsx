@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import React, { forwardRef, useEffect, useRef } from 'react';
 
+import { formatPhoneNumber } from '../lib';
 import styles from './phone-input.module.scss';
 import { usePhoneInput } from './phone-input-provider';
 
@@ -80,7 +81,11 @@ export const PhoneInputNumberInput = forwardRef<
         formatting.current = false;
       }}
       ref={inputRef}
-      value={props.value}
+      value={
+        typeof props.value === 'string'
+          ? formatPhoneNumber(props.value)
+          : props.value
+      }
     />
   );
 });

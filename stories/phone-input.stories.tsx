@@ -180,7 +180,6 @@ export function ReactHookFormAndZod() {
     handleSubmit,
     register,
     reset,
-    watch,
   } = useForm<z.infer<typeof schema>>({
     defaultValues,
     resolver: zodResolver(schema),
