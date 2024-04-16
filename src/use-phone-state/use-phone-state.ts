@@ -101,6 +101,7 @@ export const usePhoneState = ({
 
     if (phone.trim() === '') {
       setPhoneNumber('');
+      setCountry(initialCountry);
       setIsValid(false);
       return '';
     }
