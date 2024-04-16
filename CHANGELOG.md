@@ -1,3 +1,10 @@
+## [1.0.10](https://github.com/iPagar/react-phone-input-beautify/compare/v1.0.9...v1.0.10) (2024-04-16)
+
+
+### Bug Fixes
+
+* phone number validation logic in usePhoneState ([a080e1a](https://github.com/iPagar/react-phone-input-beautify/commit/a080e1a03188c712f950c7f84cb2545541c1f9a2))
+
 ## [1.0.9](https://github.com/iPagar/react-phone-input-beautify/compare/v1.0.8...v1.0.9) (2024-04-16)
 
 
