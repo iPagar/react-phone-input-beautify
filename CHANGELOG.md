@@ -1,3 +1,10 @@
+## [1.0.9-beta.4](https://github.com/iPagar/react-phone-input-beautify/compare/v1.0.9-beta.3...v1.0.9-beta.4) (2024-04-16)
+
+
+### Bug Fixes
+
+* Refactor PhoneInputNumberInput component in phone-input-number-input.tsx to handle phone number formatting and synchronization with input element ([845a618](https://github.com/iPagar/react-phone-input-beautify/commit/845a6187bd73d52cf6c41f2819cbd210034ef14b))
+
 ## [1.0.9-beta.3](https://github.com/iPagar/react-phone-input-beautify/compare/v1.0.9-beta.2...v1.0.9-beta.3) (2024-04-12)
 
 
