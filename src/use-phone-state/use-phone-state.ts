@@ -126,6 +126,11 @@ export const usePhoneState = ({
 
       setIsValid(parsedNumber.isValid());
     } else {
+      // if phone is equal to default country code
+      if (phone === `+${getCountryCallingCode(country as CountryCode)}`) {
+        setCountry(country);
+      }
+
       setIsValid(false);
     }
 

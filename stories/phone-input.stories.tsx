@@ -34,8 +34,8 @@ type FormPhoneInputProps = {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 } & HTMLProps<HTMLInputElement>;
 
-const FormPhoneInput = forwardRef(
-  (props: FormPhoneInputProps, ref: React.Ref<HTMLInputElement>) => {
+const FormPhoneInput = forwardRef<HTMLInputElement, FormPhoneInputProps>(
+  (props, ref) => {
     const { onChange } = props;
     const [country, setCountry] = useState('US');
     const [search, setSearch] = useState('');
@@ -48,7 +48,7 @@ const FormPhoneInput = forwardRef(
           setCountry(newCountry);
         }}
       >
-        {({ countryList, phone }) => (
+        {({ countryList }) => (
           <>
             <PhoneInput.Trigger>
               <CountryFlag
@@ -83,12 +83,7 @@ const FormPhoneInput = forwardRef(
                 </ul>
               </>
             </PhoneInput.Dialog>
-            <PhoneInput.NumberInput
-              {...props}
-              onChange={onChange}
-              ref={ref}
-              value={phone}
-            />
+            <PhoneInput.NumberInput {...props} onChange={onChange} ref={ref} />
           </>
         )}
       </PhoneInput.Root>
@@ -176,23 +171,29 @@ export function AnimatedFramerMotionDialog() {
 }
 
 export function ReactHookFormAndZod() {
+  const defaultValues = {
+    name: '',
+    phone: '+1',
+  };
   const {
     formState: { errors },
     handleSubmit,
     register,
+    reset,
+    watch,
   } = useForm<z.infer<typeof schema>>({
+    defaultValues,
     resolver: zodResolver(schema),
   });
-  const [submitState, setSubmitState] = useState<z.infer<typeof schema>>({
-    name: '',
-    phone: '',
-  });
+  const [submitState, setSubmitState] =
+    useState<z.infer<typeof schema>>(defaultValues);
 
   return (
     <form
       className={styles.form}
       onSubmit={handleSubmit((data) => {
         setSubmitState(data);
+        reset();
       })}
     >
       <input placeholder="Name" type="text" {...register('name')} />
