@@ -1,3 +1,18 @@
+## [1.0.9](https://github.com/iPagar/react-phone-input-beautify/compare/v1.0.8...v1.0.9) (2024-04-16)
+
+
+### Bug Fixes
+
+* Add beta branch to push event ([277b561](https://github.com/iPagar/react-phone-input-beautify/commit/277b561ac97efd63826716d37194b025957c3ca9))
+* Add getCountryCode function to retrieve the country code from a phone number ([22ee5ed](https://github.com/iPagar/react-phone-input-beautify/commit/22ee5edd5ddf8492b15fc5681f9aed59252bfd4e))
+* Refactor PhoneInputNumberInput component in phone-input-number-input.tsx to handle phone number formatting and synchronization with input element ([845a618](https://github.com/iPagar/react-phone-input-beautify/commit/845a6187bd73d52cf6c41f2819cbd210034ef14b))
+* Refactor PhoneInputNumberInput component to handle phone number formatting and synchronization with input element ([3475f89](https://github.com/iPagar/react-phone-input-beautify/commit/3475f89aee66f6991470eeca3ab8bced1f2ab9ce))
+* remove console.log ([3832a7f](https://github.com/iPagar/react-phone-input-beautify/commit/3832a7f9791c4af8b563f0f338b99deb80bbba04))
+* remove logs and update ref ([578ee73](https://github.com/iPagar/react-phone-input-beautify/commit/578ee73aecd9889933f845d1812a1b5ce9afd45e))
+* Update package.json version to 1.0.8 ([c7dc64a](https://github.com/iPagar/react-phone-input-beautify/commit/c7dc64a08427e0fd088a54f367b560aa263f49a0))
+* Update release.config.cjs and phone-input components ([96279c4](https://github.com/iPagar/react-phone-input-beautify/commit/96279c47e77d8dbf9a263c59fd4783ce94c8532a))
+* Update release.config.cjs to set prerelease value for beta channel ([98231b1](https://github.com/iPagar/react-phone-input-beautify/commit/98231b134d71b406a9b54fc471a1d77b5a791b35))
+
 ## [1.0.9-beta.5](https://github.com/iPagar/react-phone-input-beautify/compare/v1.0.9-beta.4...v1.0.9-beta.5) (2024-04-16)
 
 
