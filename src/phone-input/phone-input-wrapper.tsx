@@ -12,7 +12,7 @@ export function PhoneInputWrapper(props: React.HTMLAttributes<HTMLDivElement>) {
     setDialogPosition,
     setPhoneInputRef,
   } = usePhoneInput();
-  const { className } = props;
+  const { className, style } = props;
 
   useLayoutEffect(() => {
     if (phoneInputRef?.current) {
@@ -37,6 +37,7 @@ export function PhoneInputWrapper(props: React.HTMLAttributes<HTMLDivElement>) {
       }}
       style={{
         ...(!isPortal ? { position: 'relative' } : {}),
+        ...style,
       }}
     />
   );
