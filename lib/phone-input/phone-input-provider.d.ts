@@ -31,4 +31,4 @@ export declare function PhoneInputContextProvider({ children, dialog, props, sta
     };
     props: ReturnType<typeof usePhone>;
     state: ReturnType<typeof usePhoneState>;
-}): React.JSX.Element;
+}): import("react/jsx-runtime").JSX.Element;

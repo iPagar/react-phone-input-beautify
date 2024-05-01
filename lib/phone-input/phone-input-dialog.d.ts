@@ -3,7 +3,7 @@ export declare function PhoneInputDialog(props: Omit<React.HTMLAttributes<HTMLDi
     children?: React.ReactNode;
     onOpenChange?: (open: boolean) => void;
     open?: boolean;
-}): React.JSX.Element | null;
+}): import("react/jsx-runtime").JSX.Element | null;
 export declare function usePhoneInputDialog(props: {
     open: boolean;
 }): {

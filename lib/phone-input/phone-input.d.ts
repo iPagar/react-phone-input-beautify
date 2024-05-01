@@ -2,7 +2,8 @@ import { ISO31661AssignedEntry } from 'iso-3166';
 import React, { HTMLAttributes } from 'react';
 import { usePhoneState } from '../lib';
 import { PhoneInputDialog } from './phone-input-dialog';
-import { PhoneInputItem } from './phone-input-item';
+import { PhoneInputItem, PhoneInputItemWithForm } from './phone-input-item';
+import PhoneInputWithForm from './phone-input-number-input';
 import PhoneInputPortal from './phone-input-portal';
 import { PhoneInputTrigger } from './phone-input-trigger';
 export declare function usePhone(props: {
@@ -44,11 +45,13 @@ export declare function PhoneInputRoot(props: Omit<HTMLAttributes<HTMLDivElement
     onValidationChange?: (valid: boolean) => void;
 } & UsePhoneStateParams & {
     children?: (ChildrenFunc | React.ReactNode)[] | ChildrenFunc | React.ReactNode;
-}): React.JSX.Element;
+}): import("react/jsx-runtime").JSX.Element;
 declare const PhoneInput: {
     Dialog: typeof PhoneInputDialog;
     Item: typeof PhoneInputItem;
+    ItemWithForm: typeof PhoneInputItemWithForm;
     NumberInput: React.ForwardRefExoticComponent<React.InputHTMLAttributes<HTMLInputElement> & React.RefAttributes<HTMLInputElement>>;
+    NumberInputWithForm: typeof PhoneInputWithForm;
     Portal: typeof PhoneInputPortal;
     Root: typeof PhoneInputRoot;
     Trigger: typeof PhoneInputTrigger;

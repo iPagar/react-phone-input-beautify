@@ -1,7 +1,11 @@
 import React from 'react';
+import { UseControllerProps } from 'react-hook-form';
 export declare function PhoneInputItem(props: React.LiHTMLAttributes<HTMLLIElement> & {
     country: string;
-}): React.JSX.Element;
+}): import("react/jsx-runtime").JSX.Element;
+export declare function PhoneInputItemWithForm(props: React.LiHTMLAttributes<HTMLLIElement> & {
+    country: string;
+} & UseControllerProps): import("react/jsx-runtime").JSX.Element;
 type UsePhoneInputItemProps = {
     selected: string;
 };

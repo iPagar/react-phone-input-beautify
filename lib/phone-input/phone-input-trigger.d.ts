@@ -1,5 +1,5 @@
 import React from 'react';
-export declare function PhoneInputTrigger(props: React.ButtonHTMLAttributes<HTMLButtonElement>): React.JSX.Element;
+export declare function PhoneInputTrigger(props: React.ButtonHTMLAttributes<HTMLButtonElement>): import("react/jsx-runtime").JSX.Element;
 export declare function usePhoneInputTrigger(props: {
     open: boolean;
 }): {
