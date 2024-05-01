@@ -1,3 +1,10 @@
+## [1.0.12](https://github.com/iPagar/react-phone-input-beautify/compare/v1.0.11...v1.0.12) (2024-05-01)
+
+
+### Bug Fixes
+
+* Refactor PhoneInputRoot component in phone-input.tsx to improve code readability and maintainability ([7a00cf0](https://github.com/iPagar/react-phone-input-beautify/commit/7a00cf0201b3d9be6e84335935ce00c4b32ed9a9))
+
 ## [1.0.11](https://github.com/iPagar/react-phone-input-beautify/compare/v1.0.10...v1.0.11) (2024-04-24)
 
 
