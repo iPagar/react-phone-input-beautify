@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import React, { forwardRef, useEffect, useRef } from 'react';
+import { UseControllerProps, useController } from 'react-hook-form';
 
-import { formatPhoneNumber } from '../lib';
 import styles from './phone-input.module.scss';
 import { usePhoneInput } from './phone-input-provider';
 
@@ -12,83 +12,56 @@ export const PhoneInputNumberInput = forwardRef<
   const { props: phoneProps, state } = usePhoneInput();
   const { className, ...otherProps } = props;
 
-  const inputRef = useRef<HTMLInputElement>(null); // Создаем свой локальный ref
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  // Синхронизируем переданный ref с локальным ref
+  // Объединение ref и синхронизация внешнего и внутреннего ref
   useEffect(() => {
-    if (ref) {
-      if (typeof ref === 'function') {
-        ref(inputRef.current);
-      } else {
-        // eslint-disable-next-line no-param-reassign
-        ref.current = inputRef.current;
-      }
+    if (typeof ref === 'function') {
+      ref(inputRef.current);
+    } else if (ref) {
+      // eslint-disable-next-line no-param-reassign
+      ref.current = inputRef.current;
     }
   }, [ref]);
 
-  // Флаг для предотвращения бесконечного цикла
-  const formatting = useRef(false);
-
-  useEffect(() => {
-    const inputElement = inputRef.current;
-
-    if (!inputElement) {
-      return;
-    }
-
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (
-          mutation.type === 'attributes' &&
-          mutation.attributeName === 'value'
-        ) {
-          // Проверяем, не мы ли вызвали это изменение
-          if (!formatting.current) {
-            const formattedNumber = state.handlePhoneNumberChange(
-              inputElement.value
-            );
-            inputElement.value = formattedNumber;
-
-            formatting.current = false; // Сбрасываем флаг
-          }
-        }
-      });
-    });
-
-    observer.observe(inputElement, {
-      attributeFilter: ['value'],
-      attributes: true,
-    });
-
-    // eslint-disable-next-line consistent-return
-    return () => {
-      observer.disconnect();
-    };
-  }, [inputRef, props.onChange]);
+  // Обработчик изменений, который обновляет состояние
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formattedNumber = state.handlePhoneNumberChange(e.target.value);
+    e.target.value = formattedNumber ?? '';
+    props.onChange?.(e);
+  };
 
   return (
     <input
       {...otherProps}
       {...phoneProps.numberInputProps}
       className={clsx(phoneProps.numberInputProps.className, className)}
-      name={props.name}
-      onChange={(e) => {
-        formatting.current = true;
-        const formattedNumber = state.handlePhoneNumberChange(e.target.value);
-
-        e.target.value = formattedNumber;
-        props.onChange?.(e);
-        formatting.current = false;
-      }}
+      onChange={handleChange}
       ref={inputRef}
-      value={
-        typeof props.value === 'string'
-          ? formatPhoneNumber(props.value)
-          : props.value
-      }
     />
   );
 });
+
+function PhoneInputWithForm(
+  props: UseControllerProps & React.InputHTMLAttributes<HTMLInputElement>
+) {
+  const {
+    field: { ref: inputRef, ...inputProps },
+    formState,
+  } = useController(props);
+  const { state } = usePhoneInput();
+
+  // Optionally, handle reset logic here by checking if field is not dirty
+  useEffect(() => {
+    if (!formState.isDirty) {
+      state.handlePhoneNumberChange('');
+    }
+  }, [formState.isDirty]);
+
+  return <PhoneInputNumberInput {...props} {...inputProps} ref={inputRef} />;
+}
+
+export default PhoneInputWithForm;
 
 export function usePhoneInputNumberInput() {
   return {

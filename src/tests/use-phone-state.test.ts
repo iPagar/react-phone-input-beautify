@@ -38,12 +38,8 @@ describe('formatPhoneNumber', () => {
     expect(formatPhoneNumber('+441234567890')).toBe('+44 1234 567890');
   });
 
-  it('returns country code when no valid number is available', () => {
-    expect(formatPhoneNumber('12345', 'GB')).toBe('+44');
-  });
-
-  it('returns original parsed number for invalid phone and country', () => {
-    expect(formatPhoneNumber('12345')).toBe(undefined);
+  it('returns entered value when no valid number is available', () => {
+    expect(formatPhoneNumber('12345', 'GB')).toBe('12345');
   });
 });
 

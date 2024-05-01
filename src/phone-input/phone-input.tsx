@@ -3,8 +3,12 @@ import React, { HTMLAttributes, useEffect, useMemo, useState } from 'react';
 
 import { usePhoneState } from '../lib';
 import { PhoneInputDialog, usePhoneInputDialog } from './phone-input-dialog';
-import { PhoneInputItem, usePhoneInputItem } from './phone-input-item';
 import {
+  PhoneInputItem,
+  PhoneInputItemWithForm,
+  usePhoneInputItem,
+} from './phone-input-item';
+import PhoneInputWithForm, {
   PhoneInputNumberInput,
   usePhoneInputNumberInput,
 } from './phone-input-number-input';
@@ -150,7 +154,9 @@ export function PhoneInputRoot(
 const PhoneInput = {
   Dialog: PhoneInputDialog,
   Item: PhoneInputItem,
+  ItemWithForm: PhoneInputItemWithForm,
   NumberInput: PhoneInputNumberInput,
+  NumberInputWithForm: PhoneInputWithForm,
   Portal: PhoneInputPortal,
   Root: PhoneInputRoot,
   Trigger: PhoneInputTrigger,

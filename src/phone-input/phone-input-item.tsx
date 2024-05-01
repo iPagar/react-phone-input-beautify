@@ -1,5 +1,7 @@
 import clsx from 'clsx';
+import { CountryCode, getCountryCallingCode } from 'libphonenumber-js';
 import React, { useCallback } from 'react';
+import { UseControllerProps, useController } from 'react-hook-form';
 
 import styles from './phone-input.module.scss';
 import { usePhoneInput } from './phone-input-provider';
@@ -49,6 +51,34 @@ export function PhoneInputItem(
     >
       {children}
     </li>
+  );
+}
+
+export function PhoneInputItemWithForm(
+  props: React.LiHTMLAttributes<HTMLLIElement> & {
+    country: string;
+  } & UseControllerProps
+) {
+  const { country, name } = props;
+  const {
+    field: { ref, ...fieldProps },
+  } = useController({
+    ...props,
+  });
+
+  return (
+    <PhoneInputItem
+      {...props}
+      {...fieldProps}
+      onClick={() => {
+        fieldProps.onChange({
+          target: {
+            name,
+            value: `+${getCountryCallingCode(country as CountryCode)}`,
+          },
+        });
+      }}
+    />
   );
 }
 

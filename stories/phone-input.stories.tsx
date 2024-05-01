@@ -1,8 +1,8 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
-import React, { HTMLProps, forwardRef, useCallback, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import React, { HTMLProps, useCallback, useState } from 'react';
+import { Control, useForm } from 'react-hook-form';
 import { animated, useSpring } from 'react-spring';
 import { z } from 'zod';
 
@@ -25,71 +25,72 @@ export default {
 };
 
 const schema = z.object({
-  name: z.string().min(1, { message: 'Required' }),
+  name: z.string().min(1, 'Name is required').max(255, 'Name is too long'),
   phone: phoneValidationSchema(),
 });
 
 type FormPhoneInputProps = {
+  control: Control<any>;
   name: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 } & HTMLProps<HTMLInputElement>;
 
-const FormPhoneInput = forwardRef<HTMLInputElement, FormPhoneInputProps>(
-  (props, ref) => {
-    const { onChange } = props;
-    const [country, setCountry] = useState('US');
-    const [search, setSearch] = useState('');
+function FormPhoneInputWithForm(props: FormPhoneInputProps) {
+  const { control, name } = props;
+  const initialCountry = 'US';
+  const [search, setSearch] = useState('');
 
-    return (
-      <PhoneInput.Root
-        className={styles.formPhoneInput}
-        initialCountry={country}
-        onCountryChange={(newCountry) => {
-          setCountry(newCountry);
-        }}
-      >
-        {({ countryList }) => (
-          <>
-            <PhoneInput.Trigger>
-              <CountryFlag
-                className={styles.countryFlag}
-                country={country}
-                type="svg"
+  return (
+    <PhoneInput.Root
+      className={styles.formPhoneInput}
+      initialCountry={initialCountry}
+    >
+      {({ country, countryList }) => (
+        <>
+          <PhoneInput.Trigger>
+            <CountryFlag
+              className={styles.countryFlag}
+              country={country}
+              type="svg"
+            />
+          </PhoneInput.Trigger>
+
+          <PhoneInput.Dialog
+            className={styles.countrySelectDialog}
+            onOpenChange={() => {
+              setSearch('');
+            }}
+          >
+            <>
+              <input
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Search"
+                value={search}
               />
-            </PhoneInput.Trigger>
-
-            <PhoneInput.Dialog
-              className={styles.countrySelectDialog}
-              onOpenChange={() => {
-                setSearch('');
-              }}
-            >
-              <>
-                <input
-                  onChange={(e) => setSearch(e.target.value)}
-                  placeholder="Search"
-                  value={search}
-                />
-                <ul>
-                  {countryList
-                    .filter((item) =>
-                      item.name.toLowerCase().includes(search.toLowerCase())
-                    )
-                    .map((item) => (
-                      <PhoneInput.Item country={item.alpha2} key={item.alpha2}>
-                        {item.name}
-                      </PhoneInput.Item>
-                    ))}
-                </ul>
-              </>
-            </PhoneInput.Dialog>
-            <PhoneInput.NumberInput {...props} onChange={onChange} ref={ref} />
-          </>
-        )}
-      </PhoneInput.Root>
-    );
-  }
-);
+              <ul>
+                {countryList
+                  .filter((item) =>
+                    item.name.toLowerCase().includes(search.toLowerCase())
+                  )
+                  .map((item) => (
+                    <PhoneInput.ItemWithForm
+                      control={control}
+                      country={item.alpha2}
+                      key={item.alpha2}
+                      name={name}
+                    >
+                      {item.name}
+                    </PhoneInput.ItemWithForm>
+                  ))}
+              </ul>
+            </>
+          </PhoneInput.Dialog>
+          <PhoneInput.NumberInputWithForm {...props} />
+        </>
+      )}
+    </PhoneInput.Root>
+  );
+}
 
 export function AnimatedReactSpringDialog() {
   return (
@@ -176,6 +177,7 @@ export function ReactHookFormAndZod() {
     phone: '+1',
   };
   const {
+    control,
     formState: { errors },
     handleSubmit,
     register,
@@ -197,7 +199,11 @@ export function ReactHookFormAndZod() {
     >
       <input placeholder="Name" type="text" {...register('name')} />
       {errors.name && <span>{errors.name.message}</span>}
-      <FormPhoneInput {...register('phone')} placeholder="Phone" />
+      <FormPhoneInputWithForm
+        control={control}
+        name="phone"
+        placeholder="Phone"
+      />
       {errors.phone && <span>{errors.phone.message}</span>}
       <button type="submit">Submit</button>
 

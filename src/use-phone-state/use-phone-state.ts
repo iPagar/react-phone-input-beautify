@@ -37,104 +37,95 @@ export function getCountryCode(phone: string) {
 }
 
 export function formatPhoneNumber(phoneNumber: string, country?: string) {
-  const parsedNumber = parsePhoneNumberFromString(phoneNumber);
-  if (!parsedNumber) {
-    try {
-      const phoneCode = getPhoneCode(country as CountryCode);
+  const asYouType = new AsYouType(country as CountryCode);
 
-      if (phoneCode) {
-        return `+${phoneCode}`;
-      }
-    } catch (error) {
-      return parsedNumber;
-    }
-
-    return parsedNumber;
+  if (!phoneNumber) {
+    return `+${getPhoneCode(country as CountryCode)}`;
   }
 
-  return parsedNumber.formatInternational();
+  const formattedNumber = asYouType.input(phoneNumber);
+
+  if (formattedNumber) {
+    return formattedNumber;
+  }
+
+  return phoneNumber;
 }
 
 /**
- * @param initialCountry - format is ISO 3166-1 alpha-2
- * @param initialPhoneNumber - any string
+ * Custom React hook to manage phone state including country and phone number.
+ *
+ * @param initialCountry Initial country code (ISO 3166-1 alpha-2).
+ * @param initialPhoneNumber Initial phone number as a string.
  */
 export const usePhoneState = ({
   initialCountry = 'US',
   initialPhoneNumber = '',
 } = {}) => {
-  const [country, setCountry] = useState(
-    getCountryCode(initialPhoneNumber) || initialCountry
+  const [country, setCountry] = useState(initialCountry);
+  const initialCountryCode = getCountryCallingCode(
+    initialCountry as CountryCode
   );
-  const [phoneNumber, setPhoneNumber] = useState(
+  const [phoneNumber, setPhoneNumber] = useState(() =>
     formatPhoneNumber(initialPhoneNumber, initialCountry)
   );
   const [isValid, setIsValid] = useState(
-    phoneValidationSchema().safeParse(initialPhoneNumber).success
+    () => phoneValidationSchema().safeParse(initialPhoneNumber).success
   );
 
-  /**
-   *
-   * @param newCountry - format is ISO 3166-1 alpha-2
-   * @example "US", "RU", "GB"
-   */
-  const handleCountryChange = (newCountry: string) => {
-    setCountry(newCountry);
-
-    // Get the country calling code
-    try {
-      const phoneCode = getCountryCallingCode(newCountry as CountryCode);
-      setPhoneNumber(`+${phoneCode}`);
-    } catch (error) {
-      setPhoneNumber('');
-    }
-
+  // Resets the phone number to initial conditions
+  const resetPhoneNumber = () => {
+    setPhoneNumber(`+${initialCountryCode}`);
+    setCountry(initialCountry);
     setIsValid(false);
   };
 
-  /**
-   *
-   * @param newPhoneNumber - any string
-   */
-  const handlePhoneNumberChange = (newPhoneNumber: string): string => {
-    let phone = newPhoneNumber;
+  // Formats phone number and updates states
+  const formatAsYouType = (phone: string, currentCountry: string): string => {
+    const asYouType = new AsYouType(currentCountry as CountryCode);
+    return asYouType.input(phone.startsWith('+') ? phone : `+${phone}`);
+  };
 
-    if (phone.trim() === '') {
-      setPhoneNumber('');
-      setCountry(initialCountry);
+  // Updates phone number and validity based on the formatted input
+  const updatePhoneNumberState = (formattedNumber: string) => {
+    const asYouType = new AsYouType(country as CountryCode);
+    asYouType.input(formattedNumber);
+    const parsedNumber = asYouType.getNumber();
+    setPhoneNumber(formattedNumber);
+
+    if (parsedNumber && parsedNumber.isValid()) {
+      setIsValid(true);
+      const newCountry = parsedNumber.country;
+      if (newCountry && newCountry !== country) {
+        setCountry(newCountry);
+      }
+    } else {
       setIsValid(false);
+    }
+  };
+
+  const handleCountryChange = (newCountry: string) => {
+    try {
+      const phoneCode = getCountryCallingCode(newCountry as CountryCode);
+      setPhoneNumber(`+${phoneCode}`);
+      setCountry(newCountry);
+      setIsValid(false); // Assume phone number is not valid until verified
+    } catch (error) {
+      console.error('Error fetching country calling code:', error);
+      setPhoneNumber('');
+      setCountry(newCountry); // Still update the country
+    }
+  };
+
+  const handlePhoneNumberChange = (newPhoneNumber: string): string => {
+    const trimmedPhone = newPhoneNumber.trim();
+    if (!trimmedPhone) {
+      resetPhoneNumber();
       return '';
     }
 
-    // If the phone number doesn't start with a "+", add it
-    if (phone[0] !== '+') {
-      phone = `+${phone}`;
-    }
-
-    // Format the phone number
-    const asYouType = new AsYouType(country as CountryCode);
-    const formattedNumber = asYouType.input(phone);
-    setPhoneNumber(formattedNumber);
-
-    // Check if the phone number is valid
-    const parsedNumber = asYouType.getNumber();
-
-    if (parsedNumber) {
-      const newCountry = parsedNumber.country;
-      if (newCountry && newCountry !== country) {
-        setCountry(newCountry); // Update the country if it's different
-      }
-
-      setIsValid(parsedNumber.isValid());
-    } else {
-      // if phone is equal to default country code
-      if (phone === `+${getCountryCallingCode(country as CountryCode)}`) {
-        setCountry(country);
-      }
-
-      setIsValid(false);
-    }
-
+    const formattedNumber = formatAsYouType(trimmedPhone, country);
+    updatePhoneNumberState(formattedNumber);
     return formattedNumber;
   };
 
