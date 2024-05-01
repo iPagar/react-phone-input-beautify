@@ -106,7 +106,7 @@ export function PhoneInputRoot(
   }, [onValidationChange, state.isValid]);
 
   useEffect(() => {
-    if (onPhoneChange) {
+    if (onPhoneChange && state.phoneNumber) {
       onPhoneChange(state.phoneNumber);
     }
   }, [onPhoneChange, state.phoneNumber]);
@@ -120,16 +120,15 @@ export function PhoneInputRoot(
       const redactored = child({
         country: state.country,
         countryList: state.countryList,
-        key,
         onPhoneChange: (e) => state.handlePhoneNumberChange(e.target.value),
         open: isOpen,
-        phone: state.phoneNumber,
+        phone: state.phoneNumber ?? '',
       });
 
-      return React.cloneElement(redactored, { key });
+      return React.cloneElement(redactored as any, { key });
     }
 
-    return React.cloneElement(child, { key });
+    return React.cloneElement(child as any, { key });
   };
 
   // Обработка children, если это массив или одиночный элемент/функция
