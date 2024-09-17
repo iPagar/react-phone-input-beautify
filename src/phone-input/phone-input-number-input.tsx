@@ -25,9 +25,54 @@ export const PhoneInputNumberInput = forwardRef<
   }, [ref]);
 
   // Обработчик изменений, который обновляет состояние
+  const calculateCursorPosition = (
+    oldValue: string,
+    newValue: string,
+    oldPosition: number
+  ): number => {
+    const digitsBeforeCursor = oldValue
+      .slice(0, oldPosition)
+      .replace(/\D/g, '').length;
+
+    let newPosition = 0;
+    let digitCount = 0;
+
+    for (let i = 0; i < newValue.length; i++) {
+      if (/\d/.test(newValue[i])) {
+        digitCount++;
+      }
+      if (digitCount > digitsBeforeCursor) {
+        break;
+      }
+      newPosition = i + 1;
+    }
+
+    // Если удален пробел, сдвигаем курсор на одну позицию влево
+    if (newValue.length > oldValue.length && newValue[oldPosition] === ' ') {
+      newPosition = Math.max(0, newPosition - 1);
+    }
+
+    return newPosition;
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const formattedNumber = state.handlePhoneNumberChange(e.target.value);
-    e.target.value = formattedNumber ?? '';
+    const input = e.target;
+    const cursorPosition = input.selectionStart;
+    const oldValue = input.value;
+    const formattedNumber = state.handlePhoneNumberChange(input.value);
+
+    if (formattedNumber !== null) {
+      input.value = formattedNumber;
+      if (cursorPosition !== null) {
+        const newCursorPosition = calculateCursorPosition(
+          oldValue,
+          formattedNumber,
+          cursorPosition
+        );
+        input.setSelectionRange(newCursorPosition, newCursorPosition);
+      }
+    }
+
     props.onChange?.(e);
   };
 

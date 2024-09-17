@@ -6,7 +6,9 @@ import {
   screen,
   waitFor,
 } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
+import { PhoneInput } from '../src/phone-input';
 import { ReactHookFormAndZod } from './phone-input.stories';
 
 describe('ReactHookFormAndZod', () => {
@@ -87,5 +89,127 @@ describe('ReactHookFormAndZod', () => {
     expect(screen.getByDisplayValue('+44')).toBeInTheDocument();
     // Проверяем, что флаг страны обновился
     expect(screen.getByAltText('GB')).toBeInTheDocument();
+  });
+
+  const setup = () =>
+    render(
+      <PhoneInput.Root>
+        <PhoneInput.NumberInput placeholder="Phone" />
+      </PhoneInput.Root>
+    );
+
+  it('maintains cursor position when adding a digit', async () => {
+    setup();
+    const input = screen.getByRole('textbox') as HTMLInputElement;
+
+    await act(async () => {
+      await userEvent.type(input, '+7912');
+    });
+    expect(input).toHaveValue('+7 912');
+    expect(input.selectionStart).toBe(6);
+    expect(input.selectionEnd).toBe(6);
+  });
+
+  it('maintains cursor position when removing a digit', async () => {
+    setup();
+    const input = screen.getByRole('textbox') as HTMLInputElement;
+
+    await act(async () => {
+      await userEvent.type(input, '+79123');
+    });
+    expect(input).toHaveValue('+7 912 3');
+
+    await act(async () => {
+      await userEvent.type(input, '{backspace}');
+    });
+    expect(input).toHaveValue('+7 912');
+    expect(input.selectionStart).toBe(6);
+    expect(input.selectionEnd).toBe(6);
+  });
+
+  it('handles cursor position when removing a space', async () => {
+    setup();
+    const input = screen.getByRole('textbox') as HTMLInputElement;
+
+    await act(async () => {
+      await userEvent.type(input, '+7912 5');
+    });
+    expect(input).toHaveValue('+7 912 5');
+
+    await act(async () => {
+      await userEvent.type(input, '{backspace}');
+    });
+    expect(input).toHaveValue('+7 912');
+    expect(input.selectionStart).toBe(6);
+    expect(input.selectionEnd).toBe(6);
+  });
+
+  it('handles cursor position when pasting a number', async () => {
+    setup();
+    const input = screen.getByRole('textbox') as HTMLInputElement;
+
+    input.focus();
+    await act(async () => {
+      await userEvent.paste('+79123456789');
+    });
+    expect(input).toHaveValue('+7 912 345 67 89');
+    expect(input.selectionStart).toBe(16);
+    expect(input.selectionEnd).toBe(16);
+  });
+
+  it('maintains cursor position when typing in the middle', async () => {
+    setup();
+    const input = screen.getByRole('textbox') as HTMLInputElement;
+
+    await act(async () => {
+      await userEvent.type(input, '+7912345');
+    });
+
+    expect(input).toHaveValue('+7 912 345');
+
+    await act(async () => {
+      await userEvent.type(input, '6', {
+        delay: 100,
+        initialSelectionEnd: 5,
+        initialSelectionStart: 4,
+      });
+    });
+
+    expect(input).toHaveValue('+7 962 345');
+    expect(input.selectionStart).toBe(5);
+    expect(input.selectionEnd).toBe(5);
+  });
+
+  it('maintains cursor position when typing in the middle when there is a multiple backspace', async () => {
+    setup();
+    const input = screen.getByRole('textbox') as HTMLInputElement;
+
+    await act(async () => {
+      await userEvent.type(input, '+7912345');
+    });
+
+    await act(async () => {
+      await userEvent.type(input, '{backspace}{backspace}', {
+        delay: 100,
+        initialSelectionEnd: 5,
+        initialSelectionStart: 5,
+      });
+    });
+
+    expect(input).toHaveValue('+7 2345');
+    expect(input.selectionStart).toBe(3);
+    expect(input.selectionEnd).toBe(3);
+
+    await act(async () => {
+      await userEvent.type(input, '6', {
+        delay: 100,
+        initialSelectionEnd: 3,
+        initialSelectionStart: 3,
+      });
+    });
+
+    expect(input).toHaveValue('+7 62345');
+    expect(input.selectionStart).toBe(4);
+    expect(input.selectionEnd).toBe(4);
   });
 });

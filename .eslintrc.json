@@ -25,6 +25,7 @@
         "tsx": "never"
       }
     ],
+    "no-plusplus": "off",
     "object-curly-newline": "off",
     "react/jsx-props-no-spreading": "off",
     "operator-linebreak": "off",
