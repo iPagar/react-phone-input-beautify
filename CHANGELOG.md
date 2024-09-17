@@ -1,3 +1,10 @@
+# [1.1.0-beta.1](https://github.com/iPagar/react-phone-input-beautify/compare/v1.0.12...v1.1.0-beta.1) (2024-09-17)
+
+
+### Features
+
+* **input:** improve phone input cursor handling and add tests ([3634e77](https://github.com/iPagar/react-phone-input-beautify/commit/3634e77103620da05af02fb44413d71b20da24c2))
+
 ## [1.0.12](https://github.com/iPagar/react-phone-input-beautify/compare/v1.0.11...v1.0.12) (2024-05-01)
 
 
